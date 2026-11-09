@@ -1,0 +1,133 @@
+<!doctype html>
+<!-- teach-me-why lesson template. Replace every {{...}} placeholder and delete these comments. -->
+<html lang="{{language code, e.g. en}}">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{{The question, e.g. Why a git worktree?}}</title>
+	<style>
+		:root {
+			--bg: #fdfcf8;
+			--fg: #1f1d1a;
+			--muted: #6b665d;
+			--rule: #e4e0d6;
+			--accent: #9a3412;
+			--code-bg: #f3f0e8;
+			--ok: #166534;
+			--ok-bg: #e7f4ea;
+			--no: #991b1b;
+			--no-bg: #fbeaea;
+		}
+		@media (prefers-color-scheme: dark) {
+			:root {
+				--bg: #1a1917;
+				--fg: #ebe7df;
+				--muted: #a39d92;
+				--rule: #34312c;
+				--accent: #f0a37a;
+				--code-bg: #26241f;
+				--ok: #86d39b;
+				--ok-bg: #1e3125;
+				--no: #f19c9c;
+				--no-bg: #3a2222;
+			}
+		}
+		* { box-sizing: border-box; }
+		body {
+			margin: 0;
+			background: var(--bg);
+			color: var(--fg);
+			font: 18px/1.65 Charter, "Iowan Old Style", Georgia, serif;
+		}
+		main { max-width: 42rem; margin: 0 auto; padding: 3rem 1rem 4rem; }
+		header p { color: var(--muted); margin: 0; font-size: 0.9rem; letter-spacing: 0.04em; text-transform: uppercase; }
+		h1 { font-size: 2rem; line-height: 1.2; margin: 0.3rem 0 1.5rem; }
+		h2 { font-size: 1.15rem; margin: 2.5rem 0 0.6rem; color: var(--accent); }
+		.answer { font-size: 1.1rem; border-left: 3px solid var(--accent); padding-left: 1rem; }
+		code, pre { font: 0.85em/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace; background: var(--code-bg); border-radius: 4px; }
+		code { padding: 0.1em 0.3em; }
+		pre { padding: 0.9rem 1rem; overflow-x: auto; }
+		pre code { padding: 0; background: none; }
+		.where { color: var(--muted); font-size: 0.9rem; }
+		table { border-collapse: collapse; width: 100%; font-size: 0.95rem; }
+		th, td { text-align: left; vertical-align: top; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--rule); }
+		.quiz { border: 1px solid var(--rule); border-radius: 6px; padding: 1rem; margin: 1rem 0; }
+		.quiz legend { font-weight: bold; padding: 0 0.3rem; }
+		.quiz button {
+			display: block; width: 100%; text-align: left; margin: 0.4rem 0; padding: 0.6rem 0.8rem;
+			font: inherit; color: inherit; background: none; border: 1px solid var(--rule); border-radius: 4px; cursor: pointer;
+		}
+		.quiz button:hover { border-color: var(--accent); }
+		.quiz button.ok { background: var(--ok-bg); border-color: var(--ok); }
+		.quiz button.no { background: var(--no-bg); border-color: var(--no); }
+		.quiz .feedback { margin: 0.6rem 0 0; min-height: 1.6em; }
+		a { color: var(--accent); }
+		footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.95rem; }
+	</style>
+</head>
+<body>
+<main>
+	<header>
+		<p>{{Lesson, in the user's language}} · {{project name}} · {{date}}</p>
+		<h1>{{The question, e.g. Why a git worktree instead of a branch?}}</h1>
+	</header>
+
+	<h2>{{The short answer}}</h2>
+	<p class="answer">{{Two or three sentences that answer the question on their own.}}</p>
+
+	<h2>{{What happened here}}</h2>
+	<p>{{The decision in this session, and what it was for.}}</p>
+	<pre><code>{{The real snippet or command, HTML-escaped.}}</code></pre>
+	<p class="where">{{Where: file path and line, or the step of the task.}}</p>
+
+	<h2>{{The idea behind it}}</h2>
+	<p>{{The concept, explained only as far as this decision needs. Cite sources inline with links.}}</p>
+
+	<h2>{{The alternatives}}</h2>
+	<table>
+		<thead><tr><th>{{Option}}</th><th>{{When it's the right choice}}</th></tr></thead>
+		<tbody>
+			<tr><td>{{The choice made}}</td><td>{{When it fits, as here.}}</td></tr>
+			<tr><td>{{An alternative}}</td><td>{{When it would have been the better call.}}</td></tr>
+		</tbody>
+	</table>
+
+	<!-- Optional: keep this section only when code says it better than prose. -->
+	<h2>{{An example}}</h2>
+	<p>{{One line introducing a minimal example outside this project.}}</p>
+	<pre><code>{{Minimal example, HTML-escaped.}}</code></pre>
+
+	<h2>{{Quick check}}</h2>
+	<!-- One or two questions. Options of about the same length; vary the right one's position; data-correct="true" on the right one. -->
+	<fieldset class="quiz">
+		<legend>{{A new situation where the concept applies: what would you do?}}</legend>
+		<button type="button" data-feedback="{{Why this is wrong.}}">{{Option A}}</button>
+		<button type="button" data-correct="true" data-feedback="{{Why this is right.}}">{{Option B}}</button>
+		<button type="button" data-feedback="{{Why this is wrong.}}">{{Option C}}</button>
+		<p class="feedback" aria-live="polite"></p>
+	</fieldset>
+
+	<h2>{{Learn more}}</h2>
+	<ul>
+		<li><a href="{{primary source URL}}">{{Primary source title}}</a>: {{what you'll find there.}}</li>
+	</ul>
+
+	<footer>
+		{{Anything unclear? Ask me in the session: I can explain a part again, give another example, or change the decision if it no longer looks right.}}
+	</footer>
+</main>
+<script>
+	document.querySelectorAll(".quiz").forEach(function (quiz) {
+		var feedback = quiz.querySelector(".feedback");
+		quiz.querySelectorAll("button").forEach(function (button) {
+			button.addEventListener("click", function () {
+				var right = button.dataset.correct === "true";
+				quiz.querySelectorAll("button").forEach(function (b) { b.classList.remove("ok", "no"); });
+				button.classList.add(right ? "ok" : "no");
+				feedback.textContent = (right ? "✓ " : "✗ ") + button.dataset.feedback;
+			});
+		});
+	});
+</script>
+</body>
+</html>

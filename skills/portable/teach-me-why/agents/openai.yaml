@@ -1,0 +1,5 @@
+interface:
+  display_name: "Teach me why"
+  short_description: "Explain one of this session's decisions as a short lesson"
+policy:
+  allow_implicit_invocation: false

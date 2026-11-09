@@ -132,7 +132,7 @@ An agent can write a thousand lines before you've read ten, and a change too big
 
 ### Tested like code
 
-A skill is a prompt, and prompts regress quietly. Evals run a skill in a throwaway repository, with a `gh` stub that never reaches GitHub, and grade it on the commits, branches and pull requests it leaves behind, not only on what it says. Trigger tests check that a description picks its skill over the siblings that compete for the same request. So far `commit`, `ship`, `adversarial-review` and `adapt-skill` have evals; the rest are still to come. CI validates every skill, agent and script, and behaviour in Codex and Copilot is tried in those agents, not assumed (see [what works where](#what-works-where)).
+A skill is a prompt, and prompts regress quietly. Evals run a skill in a throwaway repository, with a `gh` stub that never reaches GitHub, and grade it on the commits, branches and pull requests it leaves behind, not only on what it says. Trigger tests check that a description picks its skill over the siblings that compete for the same request. So far `commit`, `ship`, `adversarial-review`, `adapt-skill` and `teach-me-why` have evals; the rest are still to come. CI validates every skill, agent and script, and behaviour in Codex and Copilot is tried in those agents, not assumed (see [what works where](#what-works-where)).
 
 ## Where this fits: harness engineering
 
@@ -187,6 +187,7 @@ Templates are marked _template_.
 
 - **[capture-learnings](./skills/portable/capture-learnings/SKILL.md)**: turn a conversation's corrections into project docs.
 - **[retro](./skills/portable/retro/SKILL.md)**: a retrospective over a day or week of agent sessions.
+- **[teach-me-why](./skills/portable/teach-me-why/SKILL.md)**: a short HTML lesson on why the agent made one of this session's decisions.
 
 **Templates**
 
@@ -200,7 +201,7 @@ All three plugin installs load every portable skill. A few depend on the agent:
 
 - `ocr-review` runs in Claude Code and Copilot CLI, which load its reviewer agent; Codex can't start named agents.
 - `retro` reads Claude Code, Codex and Copilot CLI sessions.
-- `setup-ocr` and `setup-review-docs` only run when you ask for them in Claude Code and Codex. Copilot CLI has no way to keep its model from starting a skill on its own.
+- `setup-ocr`, `setup-review-docs` and `teach-me-why` only run when you ask for them in Claude Code and Codex. Copilot CLI has no way to keep its model from starting a skill on its own.
 - The optional hooks run in Claude Code and Copilot CLI, which both read them from the plugin. Codex doesn't run a plugin's hooks (tested with Codex 0.166.0).
 
 ## Contributing
@@ -209,7 +210,7 @@ All three plugin installs load every portable skill. A few depend on the agent:
 
 ## Credits
 
-The layout and conventions, and this README's problem-first structure, draw on [mattpocock/skills](https://github.com/mattpocock/skills). The description checklist in `AGENTS.md` comes from [eferro/skill-factory](https://github.com/eferro/skill-factory), and two checks in `capture-learnings`, testing a convention against the code and correcting docs proved wrong, from Emilio Carrión's [`compound`](https://gist.github.com/EmilioCarrion/efdfa5487963651bf65fc491f30fbeb4) skill, which I found through it.
+The layout and conventions, and this README's problem-first structure, draw on [mattpocock/skills](https://github.com/mattpocock/skills), and `teach-me-why`'s lessons on its `teach` skill. The description checklist in `AGENTS.md` comes from [eferro/skill-factory](https://github.com/eferro/skill-factory), and two checks in `capture-learnings`, testing a convention against the code and correcting docs proved wrong, from Emilio Carrión's [`compound`](https://gist.github.com/EmilioCarrion/efdfa5487963651bf65fc491f30fbeb4) skill, which I found through it.
 
 ## License
 

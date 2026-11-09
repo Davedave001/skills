@@ -19,8 +19,8 @@
 		},
 		{
 			"title": "Learn",
-			"description": "Write down what a session taught, so the next one doesn't repeat its mistakes.",
-			"skills": ["capture-learnings", "retro"]
+			"description": "Write down what a session taught, so the next one doesn't repeat its mistakes, or have it explain one of its decisions to you.",
+			"skills": ["capture-learnings", "retro", "teach-me-why"]
 		},
 		{
 			"title": "Templates",

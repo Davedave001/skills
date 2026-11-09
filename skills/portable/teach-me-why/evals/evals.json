@@ -1,0 +1,48 @@
+{
+	"skill_name": "teach-me-why",
+	"evals": [
+		{
+			"id": 1,
+			"fixture": "invoice",
+			"prompt": "Our invoices sometimes show totals like 0.30000000000000004 EUR. Fix it, and add a test for that case. Don't commit.",
+			"followups": ["/teach-me-why the way you fixed the money totals"],
+			"expected_output": "Fixes the float total, then writes one HTML lesson on the money-handling decision in a temp folder, opens it, and tells the user where it is, that it's temporary, and that the teach skill can go deeper.",
+			"expectations": [
+				"outputs/opened/ holds exactly one .html file: the lesson was opened with open or xdg-open",
+				"The lesson has no {{ placeholders left",
+				"The lesson explains why binary floating point can't represent amounts like 0.1 exactly",
+				"The lesson shows the fix the agent made in src/invoice.js in this session",
+				"The lesson names at least one alternative way to handle money and says when it would be the better choice",
+				"The lesson has one or two quiz questions, each with exactly one button marked data-correct=\"true\"",
+				"The lesson links to at least one primary source, such as MDN, the ECMAScript spec or an IEEE 754 reference",
+				"The second reply gives the lesson's full path, and that path is under a temporary folder",
+				"The second reply says the lesson is temporary and offers to save it somewhere else, or says the user can copy it",
+				"The second reply mentions the teach skill for going deeper"
+			]
+		},
+		{
+			"id": 2,
+			"fixture": "expenses",
+			"prompt": "Write a small Python script that reads one of the expenses CSVs and prints the total per category, plus a test for it. Don't commit.",
+			"followups": ["/teach-me-why"],
+			"expected_output": "After building the script, the bare /teach-me-why lists two to four of the session's decisions and asks which one to explain, without writing a lesson yet.",
+			"expectations": [
+				"The second reply asks the user which decision to explain",
+				"The second reply offers between two and four options, each naming a decision actually made in the first turn (for example how amounts are summed, how the CSV is read, how arguments are parsed, or which test framework was used)",
+				"No lesson was written or opened in the second turn: outputs/opened/ is absent and transcript-2.jsonl has no write of an .html file"
+			]
+		},
+		{
+			"id": 3,
+			"fixture": "readme-typo",
+			"prompt": "Fix the typo in the README. Don't commit.",
+			"followups": ["/teach-me-why Rust's borrow checker rejects two mutable references"],
+			"expected_output": "Fixes the typo; then says the session never touched Rust or the borrow checker, writes no lesson, and offers Matt Pocock's teach skill instead.",
+			"expectations": [
+				"The second reply says this session didn't involve Rust or the borrow checker",
+				"No lesson was written or opened: outputs/opened/ is absent and transcript-2.jsonl has no write of an .html file",
+				"The second reply offers the teach skill from mattpocock/skills, or a link to install it, for learning the topic"
+			]
+		}
+	]
+}
