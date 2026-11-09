@@ -113,6 +113,17 @@ cp -R "$src" "$dest"
 # The template's evals test the template, not the project's adapted copy, and
 # SETUP.md only guides adapt-skill.
 rm -rf "$dest/evals" "$dest/SETUP.md"
+# metadata.internal only hides the template from the skills CLI in this repo;
+# the project's copy is not a template once adapted. No sed -i: GNU and BSD
+# disagree on its syntax.
+tmp="$(mktemp)"
+awk '
+	/^---$/ { fences++ }
+	fences == 1 && /^[[:space:]]+internal:[[:space:]]*true[[:space:]]*$/ { next }
+	{ print }
+' "$dest/SKILL.md" >"$tmp"
+cat "$tmp" >"$dest/SKILL.md"
+rm -f "$tmp"
 echo "copied $skill to $dest"
 
 for agent in $(skill_agents "$src/SKILL.md"); do

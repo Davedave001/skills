@@ -48,6 +48,7 @@ Wait for the answers before writing anything.
 - **Install:** start from the template. Replace each marker's example content with the confirmed answer, written in the same voice and level of detail as the rest of the skill, and delete the marker. If a marker doesn't apply to this project, remove the part it governs and tidy anything that referred to it.
 - **Refresh:** start from the project's copy. Keep the user's hand edits, apply what changed in the project, and bring in the template's improvements, adapting any new markers.
 - Keep the frontmatter `name`, and `metadata.template-revision` equal to the template's. Change `description` only if it no longer matches what the adapted skill does.
+- Drop `metadata.internal`, also from an existing copy on a refresh. It only keeps the `skills` CLI from installing the template from the templates' repo, and an adapted skill is not a template.
 
 Show the user the draft: in full on an install, as a diff against the existing copy on a refresh. Then wait for their go-ahead before writing, and apply any edits they ask for. This holds even when they accepted every answer: accepting the answers is not approving the draft.
 

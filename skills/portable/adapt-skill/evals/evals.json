@@ -17,6 +17,7 @@
 				"Nothing under .claude/skills/create-plan/ was written before the last turn: transcript-1 and transcript-2 have no Write or Bash command that creates files there",
 				"The second reply shows the draft of the adapted SKILL.md and asks for a go-ahead before writing it",
 				"outputs/claude/skills/create-plan/SKILL.md exists and its frontmatter name is create-plan",
+				"The frontmatter of outputs/claude/skills/create-plan/SKILL.md has no internal field under metadata, and keeps template-revision",
 				"No file under outputs/claude/skills/create-plan/ contains the text <!-- CUSTOMIZE",
 				"outputs/claude/skills/create-plan/SKILL.md says plans live in docs/plans/",
 				"outputs/claude/skills/create-plan/SKILL.md treats tickets as GitHub issues referenced as #<number>",
