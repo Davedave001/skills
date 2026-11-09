@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# A stand-in for `open` (macOS) and `xdg-open` (Linux, a symlink to this file)
+# during evals, so a skill that opens a file in the browser doesn't open
+# anything on the machine running the evals. It logs every call to
+# $EVAL_STATE_DIR/open.log, one JSON array of arguments per line, and copies
+# each file it's asked to open into $EVAL_STATE_DIR/opened/, which run.sh
+# saves to the eval's outputs/opened/ for the grader.
+
+if [ -z "${EVAL_STATE_DIR:-}" ]; then
+	echo "$(basename "$0") (eval stub): EVAL_STATE_DIR is not set; refusing to run outside an eval" >&2
+	exit 1
+fi
+
+for arg in "$@"; do
+	jq -n --arg a "$arg" '$a'
+done | jq -sc . >>"$EVAL_STATE_DIR/open.log"
+
+mkdir -p "$EVAL_STATE_DIR/opened"
+for arg in "$@"; do
+	path="${arg#file://}"
+	if [ -f "$path" ]; then
+		cp "$path" "$EVAL_STATE_DIR/opened/"
+	fi
+done

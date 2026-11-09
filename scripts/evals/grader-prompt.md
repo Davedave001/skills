@@ -8,6 +8,7 @@ The current folder holds:
 - `outputs/git-state.txt`: the repository after the run (branch, status, commits with their files, the remote's refs), then the full patch of every commit made during the run. Check what a commit contains in those patches.
 - `outputs/claude/`, if present: the repository's `.claude/` folder after the run (skills and agents the agent installed), without the skill under test. `git-state.txt` only lists it as untracked, so check its files here.
 - `outputs/gh.log`: every GitHub CLI call the agent made, one per line, as a JSON array of the arguments after `gh` (`["pr","create","--base","main"]`). The CLI was a stub: it never reached GitHub.
+- `outputs/opened/`, if present: a copy of each file the agent opened with `open` or `xdg-open` (a stub that opened nothing), such as an HTML page meant for the user's browser.
 
 For each expectation, decide whether it passed. Prefer `git-state.txt` and `gh.log` over what the agent says in its replies: an agent saying it pushed is not evidence that it pushed. An expectation about asking the user passes only if the agent asked and stopped for the answer before acting on that point.
 

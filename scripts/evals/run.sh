@@ -11,14 +11,16 @@ set -euo pipefail
 # For each eval in <skill>/evals/evals.json, it:
 #   1. builds the eval's fixture (evals/fixtures/<fixture>.sh) in a temporary
 #      folder outside this repo, with git isolated (a throwaway global config,
-#      no signing) and the `gh` stub from stubs/ first on PATH;
+#      no signing) and the `gh`, `open` and `xdg-open` stubs from stubs/
+#      first on PATH;
 #   2. installs the skill into that repository's .claude/skills/, git-excluded,
 #      or loads this repo as a plugin when the eval sets "with_plugin";
 #   3. runs the prompt, then each of the eval's "followups" in the same
 #      session, with a temporary CLAUDE_CONFIG_DIR: none of your settings,
 #      plugins, hooks or memory, and with permission checks skipped when the
 #      eval sets "skip_permissions";
-#   4. saves the replies, the repository's state and the gh calls to
+#   4. saves the replies, the repository's state, the gh calls and the
+#      files the agent opened to
 #      <skill>-workspace/<timestamp>/eval-<id>/outputs/ and grades the
 #      expectations into grading.json, in skill-creator's format.
 #
@@ -369,6 +371,10 @@ run_one() {
 		cp "$tmp/state/gh.log" "$out/gh.log"
 	else
 		echo "(gh was never called)" >"$out/gh.log"
+	fi
+	# What the run opened with `open` or `xdg-open`, which the stub kept.
+	if [ -d "$tmp/state/opened" ]; then
+		cp -R "$tmp/state/opened" "$out/opened"
 	fi
 
 	if [ "$grade" = 0 ]; then
