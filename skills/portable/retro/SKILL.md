@@ -5,7 +5,7 @@ description: Retrospective analysis of this project's coding-agent sessions (Cla
 
 # Retro
 
-A real retrospective, not a documentation audit. The goal is to surface what's working, what's not, where the workflow is leaking time, and what concrete changes (skills, process, communication) would make the next two weeks better than the last.
+A real retrospective, not a documentation audit. The goal is to surface what's working, what's not, where the workflow is leaking time, and what concrete changes (skills, checks, process, communication) would make the next two weeks better than the last.
 
 It is bidirectional: not only "what should the agent do better", but also "what could the user do to make sessions more efficient". A good retro is honest in both directions.
 
@@ -62,10 +62,12 @@ Give each subagent (or analyse directly, for a small batch) the session summarie
 >
 > **Category 4: Proposals**
 > For each concrete proposal, give:
-> - **Type**: `new-skill`, `skill-improvement`, `new-doc`, `workflow-change`, `rule`, `reinforcement`
+> - **Type**: `new-skill`, `skill-improvement`, `new-doc`, `workflow-change`, `rule`, `sensor`, `reinforcement`
 > - **What**: a one-line description
 > - **Why**: the evidence from the sessions: which sessions, what happened
-> - **How**: the concrete next step (create the skill, edit a `SKILL.md`, add to `AGENTS.md` or `CLAUDE.md`, create a doc, add a hook or setting)
+> - **How**: the concrete next step (create the skill, edit a `SKILL.md`, add to `AGENTS.md` or `CLAUDE.md`, create a doc, add a check, hook or setting)
+>
+> A `sensor` is a check that fails when a mistake comes back: a lint rule, a structural test, a stricter type, a test or an agent hook. Propose one for a repeated mistake that leaves a mark a machine can see, in the code or in the agent's actions, and prefer it to a `rule` or a `reinforcement` when the sessions show a written rule broken anyway: the doc already had its chance. Name the check and its failure message, which says what to do instead, because the agent that trips it reads the message as its next instruction.
 >
 > Prioritise impact over volume: 3 "whoa" insights beat 10 incremental tweaks. Leave granular doc patches to the `capture-learnings` skill; this is about strategic changes.
 
@@ -77,13 +79,15 @@ When several subagents return findings:
 2. **Amplify cross-batch patterns**: a finding that appears independently in 2 or more batches is stronger evidence than one from a single batch.
 3. **Resolve contradictions**: if one batch says "X worked well" and another says "X caused problems", investigate the difference (likely different contexts).
 
-### Step 4: Verify against the existing docs
+### Step 4: Verify against the existing docs and checks
 
 Before presenting proposals, check whether each finding is already covered:
 
-1. Read the file where the change would go (`AGENTS.md`, `CLAUDE.md`, a skill, a doc).
-2. Search it for existing coverage.
+1. Read the file where the change would go (`AGENTS.md`, `CLAUDE.md`, a skill, a doc), and, for a mistake, the checks the project runs: its linter config, tests, and git and agent hooks.
+2. Search them for existing coverage.
 3. Classify as `skip` (already covered), `amend` (partly covered, needs an update) or `add` (new).
+
+A finding whose rule is written down but was broken in the sessions anyway is not a `skip`: the doc didn't work. Propose a `sensor` for it when a machine can catch the mistake, and a `reinforcement` when it can't. If a check already covers it and didn't catch it, find out why (it doesn't run where the work happens, or the rule is too narrow) and propose that fix.
 
 Drop `skip` items silently. Present `amend` items as updates to existing rules or docs.
 
@@ -116,7 +120,7 @@ Present them as a table:
 |---|------|----------|----------|-----------|
 | 1 | new-skill | `/release-check`: the release-branch checklist | 4 sessions on one release, each rediscovering the same constraints | create the skill |
 | 2 | new-doc | `docs/ARCHITECTURE.md`: how the sync worker fits together | a 128-prompt session whose root causes were all undocumented | create the doc |
-| 3 | workflow-change | A pre-push hook blocking direct pushes to release branches | the user corrected this mid-session | add the hook |
+| 3 | sensor | A lint rule that fails on direct `fetch` calls and names the API client to use instead | `AGENTS.md` says to use the client; 3 sessions called `fetch` anyway | add the rule and its line in `AGENTS.md` |
 ```
 
 For a skill proposal, add below the table:
@@ -134,14 +138,15 @@ For a skill proposal, add below the table:
 For the confirmed proposals:
 - **Rule changes and description edits:** apply them directly.
 - **New skills:** suggest creating them with the `skill-creator` skill, if available.
-- **Workflow changes and hooks:** apply the `AGENTS.md` or `CLAUDE.md` change, or suggest the `update-config` skill (if available) for hooks and settings.
+- **Sensors:** add the check where the project keeps its kind (a lint rule next to the linter's other rules, a test next to the tests of the code it covers), with its failure message, and a one-line entry in `AGENTS.md` or `CLAUDE.md` that states the rule and names the check. It changes code or config, so run the project's checks afterwards: it should pass on the current code (if it flags existing code, show the user what it found and let them choose to fix that code, exempt it or narrow the rule) and fail on the mistake. For an agent hook, suggest the `update-config` skill, if available.
+- **Workflow changes:** apply the `AGENTS.md` or `CLAUDE.md` change, or suggest the `update-config` skill (if available) for settings.
 - **New docs:** create a skeleton and reference it from `AGENTS.md` or `CLAUDE.md`.
 - **Reinforcements:** strengthen the relevant skill description or project rule.
 
 ## Rules
 
 - Proposals go into the project (`AGENTS.md`, `CLAUDE.md`, its skills and docs), where everyone working on it gets them, never into the agent's private memory.
-- Leave granular doc patches to the `capture-learnings` skill, if available. Retro is for strategic changes: workflow, skills, process, communication.
+- Leave granular doc patches to the `capture-learnings` skill, if available. Retro is for strategic changes: workflow, skills, checks, process, communication.
 - A single-session retrospective belongs to `capture-learnings`. Retro is for multi-session analysis (`day`, `week` or wider).
 - For `week` or wider, always start with the summary paragraph that sets the scene.
 - Be honest in both directions. Sugarcoating user-side feedback defeats the purpose, but frame it as evidence ("sessions with X went faster"), not judgement ("you should do X").

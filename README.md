@@ -123,7 +123,7 @@ You correct the agent, it does better, and tomorrow's session makes the same mis
 **The fix** is to write it into the project, where every agent and teammate reads it:
 
 - [`capture-learnings`](./skills/portable/capture-learnings/SKILL.md) pulls the corrections, gotchas and patterns out of a conversation, checks them against what's already documented and what the code does, and writes the ones you approve into `AGENTS.md`, a skill's references or the review docs. When a machine can catch the mistake, it proposes a check first: a rule in the project's linter, a test or a hook, whose failure message says what to do instead. It also corrects the docs the conversation proved wrong.
-- [`retro`](./skills/portable/retro/SKILL.md) reads the last day or week of Claude Code, Codex and Copilot CLI sessions and proposes three to five concrete changes: a new skill, a rule, a workflow change.
+- [`retro`](./skills/portable/retro/SKILL.md) reads the last day or week of Claude Code, Codex and Copilot CLI sessions and proposes three to five concrete changes: a new skill, a rule, a check, a workflow change.
 
 ### Too much change to review
 
@@ -139,7 +139,7 @@ An agent can write a thousand lines before you've read ten, and a change too big
 
 "Never force-push" in `AGENTS.md` holds until the model slips.
 
-**The fix** is the optional [git-guardrails](./hooks/git-guardrails/README.md) hook, which turns the git rules the skills state into hard denials: staging everything, force-pushing, skipping signing or hooks. And the skills that act on their own, like [`ship`](./skills/templates/ship/SKILL.md), stop for the calls that are yours: a secret in the diff, a rebase conflict, a review finding that needs a product decision.
+**The fix** is the optional [git-guardrails](./hooks/git-guardrails/README.md) hook, which turns the git rules the skills state into hard denials: staging everything, force-pushing, skipping signing or hooks. `capture-learnings` and `retro` do the same for your project's rules: one that was written down and broken anyway becomes a lint rule, test or hook. And the skills that act on their own, like [`ship`](./skills/templates/ship/SKILL.md), stop for the calls that are yours: a secret in the diff, a rebase conflict, a review finding that needs a product decision.
 
 ### Tested like code
 
@@ -153,10 +153,10 @@ In those terms:
 
 - **Guides:** the skills themselves, and the docs they keep up to date: `AGENTS.md`, the review docs and the glossary.
 - **Sensors:** the fresh-context reviewers in `adversarial-review` and `ocr-review`, and the git-guardrails hook. The reviewers are models, so they're slower, costlier and less predictable than a test; the hook is the only deterministic check the plugin ships.
-- **The loop that improves the harness:** `capture-learnings`, `retro` and `setup-review-docs`, which turn what went wrong into a guide.
+- **The loop that improves the harness:** `capture-learnings`, `retro` and `setup-review-docs`, which turn what went wrong into a guide, and, when a machine can catch it, into a sensor in the project's own linter, tests or hooks.
 - **Templates** have the problem Böckeler raises for harness templates: project copies fall behind as the template improves. `adapt-skill` refreshes a copy and keeps the project's edits.
 
-What the skills don't give you are the sensors that matter most: your project's tests, types and linters. `execute-plan` runs the tests at every step and `ship` runs the checks the project picks before each push, but neither can make up for checks the project doesn't have.
+What the skills don't give you are the sensors that matter most: your project's tests, types and linters. `capture-learnings` and `retro` add rules to them, `execute-plan` runs the tests at every step and `ship` runs the checks the project picks before each push, but none of them can make up for checks the project doesn't have.
 
 ## How they fit together
 
