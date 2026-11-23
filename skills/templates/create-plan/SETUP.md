@@ -5,6 +5,7 @@ Guidance for `adapt-skill` when it installs or refreshes the `create-plan` templ
 ## What to look for
 
 - **An installed `execute-plan`:** if `.claude/skills/execute-plan/` exists, reuse its plans folder and ticket conventions, so the two skills agree.
+- **An installed `write-acceptance-criteria`:** if `.claude/skills/write-acceptance-criteria/` exists, reuse its glossary answer.
 - **Plans folder:** an existing one (`.agents/plans/`, `.ai/plans/`, `docs/plans/`, `plans/`), or one named in `AGENTS.md` / `CLAUDE.md`.
 - **Tickets:** the tracker the project uses, from branch names, PR titles and commit subjects (`ABC-123`, `#123`), links in docs, and the MCP tools available (a Jira, Linear or GitHub server). How tickets nest (sub-task, story, epic) and which level holds the acceptance criteria and the spec link.
 - **Specs and designs:** where they live (a docs folder, Notion, Figma, Confluence, the ticket itself), and which tools are available to read them.

@@ -9,7 +9,7 @@ description: >-
 argument-hint: "[ticket | update <ticket>]"
 metadata:
   internal: true
-  template-revision: "2"
+  template-revision: "3"
 ---
 
 # Write acceptance criteria
@@ -90,7 +90,9 @@ A light, read-only check of what exists:
 
 - Whether some of the feature already exists. Use `AGENTS.md` / `CLAUDE.md` to find where features live before searching.
 - What gates access (role, plan or account checks): it tells you which user kinds the criteria must cover.
-- The project's glossary or domain docs, if it has them, to map the sources' terms to the code's.
+
+<!-- CUSTOMIZE: the project's glossary of domain terms, the same one create-plan uses: where it lives (a root GLOSSARY.md, docs/glossary.md, one glossary per area linked from a main one). If the project keeps none, replace this with "This project keeps no glossary." -->
+- The glossary: `GLOSSARY.md` at the root, and the area glossaries it links to, for the agreed name of each domain concept the sources mention.
 
 ## Step 4: Cross-reference and flag
 
@@ -107,6 +109,7 @@ Then flag:
 - **Gaps:** behaviour implied but never specified. Propose the question to ask the product owner.
 - **Ambiguous tickets:** a description that's unclear. Propose a clarifying question.
 - **Edge cases:** raised in discussions, shown in design states, or that follow from the domain.
+- **Terms**, when the project has a glossary: a source calling a concept by another word than the glossary's (state both; the criteria use the glossary's unless the user decides otherwise), a word the glossary defines differently, or a new concept it lacks (propose a name). `create-plan` settles the glossary's entries when the work is planned.
 
 Apply the scope rules from **Product context**: user kinds a feature doesn't target get no scenarios and no gap flags.
 
@@ -135,7 +138,7 @@ For each screen or functional area, cover:
 - The user kinds in scope (see **Product context**).
 - The edge cases flagged in step 4.
 
-Each criterion states something a user or a test can observe, not how it's built.
+Each criterion states something a user or a test can observe, not how it's built, in the glossary's terms.
 
 ## Step 6: Get approval
 

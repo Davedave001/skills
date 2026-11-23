@@ -16,7 +16,8 @@ If none works, tell the user what would make it available (connecting the MCP se
 
 ## What to look for
 
-- **An installed `create-plan`:** if `.claude/skills/create-plan/` exists, reuse its ticket and spec answers, so the two skills read the same sources the same way.
+- **An installed `create-plan`:** if `.claude/skills/create-plan/` exists, reuse its ticket, spec and glossary answers, so the two skills read the same sources the same way.
+- **Glossary:** a file of domain terms (`GLOSSARY.md`, `docs/glossary.md`, a "ubiquitous language" or domain doc) and the area glossaries it links to.
 - **Product and user kinds:** the README, `AGENTS.md` / `CLAUDE.md`, and the code that gates access (role, permission, plan or entitlement checks) for the kinds of user a feature can target.
 - **Tickets:** the tracker, from branch names, PR titles and commit subjects (`ABC-123`, `#123`), links in docs, and the MCP tools available. How tickets nest (sub-task, story, epic), which level a feature starts from, and which types or labels mark user-facing work.
 - **Existing criteria:** a few tickets that already have acceptance criteria, for the heading and format the team uses.
@@ -40,4 +41,6 @@ Ask one at a time, each led by your recommendation and the tool you checked.
 
 **F. Writing back.** Ask where approved criteria go: back to the tickets (with the tool from B, and whether it can write as well as read), to a file, or only into the conversation. Propose the format and heading from existing tickets.
 
-**G. Coverage.** Propose the checklist each criteria group should consider, from the kind of product (UI states, API errors, permissions, existing data).
+**G. Glossary.** Reuse `create-plan`'s answer if it's installed. Otherwise propose the glossary you found, or none; this skill reads it but never writes it, so recommend installing `create-plan` to start one.
+
+**H. Coverage.** Propose the checklist each criteria group should consider, from the kind of product (UI states, API errors, permissions, existing data).
