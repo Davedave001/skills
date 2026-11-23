@@ -132,7 +132,7 @@ An agent can write a thousand lines before you've read ten, and a change too big
 
 ### Tested like code
 
-A skill is a prompt, and prompts regress quietly. Evals run a skill in a throwaway repository, with a `gh` stub that never reaches GitHub, and grade it on the commits, branches and pull requests it leaves behind, not only on what it says. Trigger tests check that a description picks its skill over the siblings that compete for the same request. So far `commit`, `ship`, `adversarial-review`, `adapt-skill` and `teach-me-why` have evals; the rest are still to come. CI validates every skill, agent and script, and behaviour in Codex and Copilot is tried in those agents, not assumed (see [what works where](#what-works-where)).
+A skill is a prompt, and prompts regress quietly. Evals run a skill in a throwaway repository, with a `gh` stub that never reaches GitHub, and grade it on the commits, branches and pull requests it leaves behind, not only on what it says. Trigger tests check that a description picks its skill over the siblings that compete for the same request. So far `commit`, `ship`, `create-plan`, `adversarial-review`, `adapt-skill` and `teach-me-why` have evals; the rest are still to come. CI validates every skill, agent and script, and behaviour in Codex and Copilot is tried in those agents, not assumed (see [what works where](#what-works-where)).
 
 ## Where this fits: harness engineering
 

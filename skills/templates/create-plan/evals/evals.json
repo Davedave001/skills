@@ -1,0 +1,39 @@
+{
+	"skill_name": "create-plan",
+	"evals": [
+		{
+			"id": 1,
+			"fixture": "shop-glossary",
+			"prompt": "/create-plan Customers should be able to save their cart for later, see the carts they saved, and move one back into their cart, all through the API. No ticket.",
+			"followups": ["Call it cart, and rename Basket in the code first, as its own phase. The phases and the other glossary entries are right as you proposed them; for anything else you asked, take your recommended default."],
+			"expected_output": "Proposes the phases with the plan's terms settled against GLOSSARY.md: asks for the basket-or-cart decision the glossary leaves open, offers a LineItem entry drafted from the code, and proposes a name for the saved cart, writing nothing yet. After the answer, writes .agents/plans/<name>/plan.md with a rename phase first and a Terms section, and leaves GLOSSARY.md and the code untouched.",
+			"expectations": [
+				"The first reply proposes phases and asks for approval, and transcript-1.jsonl has no Write or Edit of any file",
+				"The first reply raises basket against cart as a naming decision for the user, referring to GLOSSARY.md's open naming decisions or the code's `Basket`",
+				"The first reply says `LineItem` (src/orders/line-item.js) has no entry in GLOSSARY.md and offers one drafted from the code",
+				"The first reply proposes a name and a one-line definition for a cart saved for later",
+				"transcript-2.jsonl writes a plan under .agents/plans/ whose Phase 1 renames `Basket` to `Cart` in the code, as a refactor with no behaviour change, before any phase that adds saving carts",
+				"The plan written in transcript-2.jsonl has a Terms section listing Cart (renamed from Basket), LineItem (backfill) and the saved-cart term (new), each naming GLOSSARY.md and the phase that writes it",
+				"The identifiers the plan's later phases introduce for saved carts are built on cart, not basket (for example `SavedCart`, not `SavedBasket`)",
+				"The plan has a phase to-do that writes that phase's terms to GLOSSARY.md",
+				"Nothing was committed and GLOSSARY.md and src/ are unchanged: git-state.txt shows main at the fixture's commits and no modified tracked files"
+			]
+		},
+		{
+			"id": 2,
+			"fixture": "shop-no-glossary",
+			"prompt": "/create-plan Customers should be able to save their basket for later, see the baskets they saved, and move one back into their basket, all through the API. No ticket.",
+			"followups": ["Yes, start the glossary with those entries. The phases are right as you proposed them; for anything else you asked, take your recommended default."],
+			"expected_output": "Proposes the phases and the plan's terms, says the project has no glossary and offers to start GLOSSARY.md with them, writing nothing yet. After the answer, writes the plan with a Terms section naming GLOSSARY.md as a new file and a phase that creates it, without creating it during planning.",
+			"expectations": [
+				"The first reply proposes phases and asks for approval, and transcript-1.jsonl has no Write or Edit of any file",
+				"The first reply says the project has no glossary and offers to start one at GLOSSARY.md",
+				"The first reply proposes a name and a one-line definition for a basket saved for later, and draft entries for both Basket and LineItem, which the plan touches and no glossary defines",
+				"The plan written in transcript-2.jsonl under .agents/plans/ has a Terms section whose entries name GLOSSARY.md as their glossary, and says GLOSSARY.md is a new file",
+				"A phase to-do in the plan creates GLOSSARY.md with its first entries, and the plan has it include rules for adding terms or point AGENTS.md at it",
+				"GLOSSARY.md does not exist at the end of the run: git-state.txt lists no untracked GLOSSARY.md",
+				"Nothing was committed and src/ is unchanged: git-state.txt shows main at the fixture's commit and no modified tracked files"
+			]
+		}
+	]
+}
