@@ -11,7 +11,7 @@ description: >-
 argument-hint: "[brief path | plan folder | revise <plan folder> | audit <plan folder>]"
 metadata:
   internal: true
-  template-revision: "3"
+  template-revision: "4"
 ---
 
 # Create a plan
@@ -82,6 +82,9 @@ Read what the task will touch; without it the plan is generic and the phases won
 <!-- CUSTOMIZE: where specs and designs live (a docs folder, Notion, Figma, Confluence, the ticket itself) and how to read them with the tools available. Only list sources the project actually uses; if a needed tool is unavailable, ask the user to paste the content. -->
 - The spec and acceptance criteria: the ticket's description and comments, and any spec or design it links. Check the existing code against the spec: a mismatch there is a decision for the user before the plan is written, not a bug to discover in phase two. Link the sources in the plan's **Context**.
 
+<!-- CUSTOMIZE: the project's glossary of domain terms: where it lives (a root GLOSSARY.md, docs/glossary.md, one glossary per area linked from a main one) and whether it states its own rules for adding entries. If it has none yet, keep the path where the first plan that agrees on a term will start one. If the user wants no glossary, replace this bullet with "This project keeps no glossary: skip settling terms in step 3." -->
+- The glossary: `GLOSSARY.md` at the root, and the area glossaries it links to, so the plan speaks the agreed names. If it doesn't exist yet, the first plan that agrees on a term starts it there.
+
 - The code: trace the key files and note their paths for **Context**.
 
 **Verify every symbol you quote against the current code.** Naming a field, method, dependency or literal that doesn't exist is the most common plan defect, and an expensive one, because execution follows the plan literally. Before writing a line into the plan:
@@ -105,7 +108,17 @@ Walk the user through the proposed phases before writing anything. Each phase is
 
 On a board, each ticket gets its own plan, with 1-3 phases inside it if the ticket is large. Order the plans by the brief's execution order, or propose one from the dependencies you found.
 
-Present the breakdown and ask for approval. If the user pushes back on a boundary or a contract, iterate in the conversation.
+**Settle the plan's terms.** Alongside the phases, list every domain concept the plan touches: each entity, state, role, value or kind of event its behaviour rules, contracts and phases name, including the ones it only reads or passes along. Check each against the glossary. A glossary is usually younger than the code, so expect gaps. Each concept ends up in one of these states:
+
+- **Defined, and the code matches:** use the term exactly as written.
+- **New:** propose a name and a one-line definition. A name that already means something else elsewhere in the product gets a different one.
+- **In the code, missing from the glossary:** draft the entry from the code (definition, identifier, file) and offer to add it. The user may decline.
+- **Defined, but wrong or stale,** or the plan stretches it to a new meaning: propose the updated entry.
+- **To rename:** the user wants a better name than the code's, or the glossary lists the concept as an open naming decision. Ask for the decision. If the code should follow, offer a **rename phase**: a pure refactor, first in the plan, so the later phases already use the new name. If the user defers the rename, the entry still takes the agreed name, marked rename pending.
+
+Draft each entry by the glossary's own rules, or by [references/glossary-guide.md](references/glossary-guide.md) when it states none or doesn't exist yet. Done when every concept on the list is in one of those states with the user's agreement, or the user has declined it. The identifiers the phases introduce follow the agreed names.
+
+Present the breakdown and the terms, with every concept on the list and its state (the ones already defined on one line), and ask for approval. If the user pushes back on a boundary or a contract, iterate in the conversation.
 
 ## Step 4: Decide whether the plan deserves a file
 
@@ -118,7 +131,7 @@ If most of these hold for the approved breakdown, ask the user before writing:
 - No alternatives weighed.
 - No handoff: work starts now, in this session.
 
-Offer two options with the concrete reasons: **execute directly** (keep the phases as a checklist in the conversation and start now, with the same small-commit discipline `execute-plan` uses) or **write the plan anyway** (for a record, a handoff, or later). Recommend executing directly; it's the user's call. Skip this step for plans that are clearly multi-phase or decision-heavy.
+Offer two options with the concrete reasons: **execute directly** (keep the phases as a checklist in the conversation and start now, with the same small-commit discipline `execute-plan` uses, writing the agreed terms to the glossary in the commit that introduces their code) or **write the plan anyway** (for a record, a handoff, or later). Recommend executing directly; it's the user's call. Skip this step for plans that are clearly multi-phase or decision-heavy.
 
 ## Step 5: Write the plan
 

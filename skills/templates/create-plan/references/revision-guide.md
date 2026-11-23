@@ -22,7 +22,7 @@ Loaded by `create-plan` when it's given a plan folder that already has plans, or
 
 1. **Completed phases are locked.** A phase whose title ends with ✅ is never changed: not its content, numbering or checklists. Show it as locked, for context.
 2. **Keep the numbering.** Don't renumber phases; append new ones, or insert them as sub-phases (`Phase 3b`), so references stay valid.
-3. **Refresh the context.** Update **Sources**, **Contracts**, **Dependencies** and **Behaviour** from what you re-read.
+3. **Refresh the context.** Update **Sources**, **Terms**, **Contracts**, **Dependencies** and **Behaviour** from what you re-read. Settle the terms of any concept the revision brings in, as in step 3 of `create-plan`.
 4. **Settle open questions.** Mark the ones the new information answers as `Resolved`; add the ones the diff raises.
 5. **Overwrite, don't duplicate.** Save the revision to the same file. `brief.md` stays as it was.
 6. **Ask first.** Show the diff and wait for the user's approval before saving.

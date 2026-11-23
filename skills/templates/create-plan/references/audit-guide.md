@@ -26,7 +26,7 @@ Walk through the plan in the passes below, one dimension at a time. Within a pas
 
 ### Pass 2: Dependencies and ordering
 
-- Does any phase rely on work from a later phase?
+- Does any phase rely on work from a later phase? A rename phase comes before every phase that uses the new name.
 - Is each phase a true vertical slice: committable on its own, with tests passing and the build green?
 - Are there outside dependencies (another team's API, a migration, design assets, a release) that could block a phase? Are they in **Dependencies**?
 - Within a phase, are the to-dos in an order that works?
@@ -34,6 +34,7 @@ Walk through the plan in the passes below, one dimension at a time. Within a pas
 ### Pass 3: Feasibility against the code
 
 - Open the files, symbols, packages and contracts the plan names: do they exist, with those exact names? A wrong identifier is the most common plan defect.
+- Do the names the plan introduces follow its **Terms** and the glossary? A domain concept the plan touches that the glossary lacks, or defines otherwise, is unsettled: settle it as in step 3 of `create-plan`.
 - Does each type or contract change list its whole ripple: schemas, generated files, consumers, wiring?
 - Does the plan follow the patterns the code already uses for the same kind of thing, and the conventions in `AGENTS.md` / `CLAUDE.md`?
 - Anything costly at run time the plan ignores: large data sets, N+1 queries, heavy renders, bundle size?
@@ -60,7 +61,7 @@ Walk through the plan in the passes below, one dimension at a time. Within a pas
 ### Board: cross-plan pass
 
 - Do the board's order and dependencies match what each plan actually needs from the others?
-- Do plans that share types, contracts or files agree on their names and shapes?
+- Do plans that share types, contracts or files agree on their names and shapes, and on the terms they add to the glossary?
 
 ## How to interact
 

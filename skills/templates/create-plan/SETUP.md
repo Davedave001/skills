@@ -9,6 +9,7 @@ Guidance for `adapt-skill` when it installs or refreshes the `create-plan` templ
 - **Tickets:** the tracker the project uses, from branch names, PR titles and commit subjects (`ABC-123`, `#123`), links in docs, and the MCP tools available (a Jira, Linear or GitHub server). How tickets nest (sub-task, story, epic) and which level holds the acceptance criteria and the spec link.
 - **Specs and designs:** where they live (a docs folder, Notion, Figma, Confluence, the ticket itself), and which tools are available to read them.
 - **Contracts:** the kinds of public surface this project has, from its architecture docs and code layout: HTTP routes, events and handlers, use cases, screens and routes, schemas and migrations, CLI commands, a library's public API.
+- **Glossary:** a file of domain terms (`GLOSSARY.md`, `docs/glossary.md`, a "ubiquitous language" or domain doc), the area glossaries it links to, and any pointer to it in `AGENTS.md` / `CLAUDE.md`. Note whether it states rules for adding entries.
 
 ## Questions, in this order
 
@@ -20,4 +21,6 @@ Guidance for `adapt-skill` when it installs or refreshes the `create-plan` templ
 
 **D. Contracts.** Propose the list of contract kinds for this project.
 
-**E. Edge cases for the audit.** Propose the edge cases and states the audit should check (`references/audit-guide.md`, pass 4), from what you found about the project: UI states, offline, roles and entitlements, platforms, localisation, retries and idempotency, existing data, API or event compatibility. Keep only the ones that apply.
+**E. Glossary.** Propose the glossary you found, and say whether its own rules or `references/glossary-guide.md` will apply. If there is none, recommend starting one on demand at `GLOSSARY.md`: the first plan that agrees on a term creates it, with only the terms that plan touches. The user may want no glossary; then step 2 says so and step 3 skips settling terms.
+
+**F. Edge cases for the audit.** Propose the edge cases and states the audit should check (`references/audit-guide.md`, pass 4), from what you found about the project: UI states, offline, roles and entitlements, platforms, localisation, retries and idempotency, existing data, API or event compatibility. Keep only the ones that apply.

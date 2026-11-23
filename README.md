@@ -140,7 +140,7 @@ The work these skills do has a name that caught on in 2026: harness engineering.
 
 In those terms:
 
-- **Guides:** the skills themselves, and the docs they keep up to date: `AGENTS.md` and the review docs.
+- **Guides:** the skills themselves, and the docs they keep up to date: `AGENTS.md`, the review docs and the glossary.
 - **Sensors:** the fresh-context reviewers in `adversarial-review` and `ocr-review`, and the git-guardrails hook. The reviewers are models, so they're slower, costlier and less predictable than a test; the hook is the only deterministic check the plugin ships.
 - **The loop that improves the harness:** `capture-learnings`, `retro` and `setup-review-docs`, which turn what went wrong into a guide.
 - **Templates** have the problem Böckeler raises for harness templates: project copies fall behind as the template improves. `adapt-skill` refreshes a copy and keeps the project's edits.
@@ -167,7 +167,7 @@ Templates are marked _template_.
 
 - **[research](./skills/portable/research/SKILL.md)**: feasibility, integration cost and risks of adopting a library, tool or architectural change, as a structured report.
 - **[write-acceptance-criteria](./skills/templates/write-acceptance-criteria/SKILL.md)** _template_: acceptance criteria cross-referenced from tickets, specs, designs and code, written back to the tickets.
-- **[create-plan](./skills/templates/create-plan/SKILL.md)** _template_: a plan of vertical-slice phases, revised with finished phases locked and audited against the code.
+- **[create-plan](./skills/templates/create-plan/SKILL.md)** _template_: a plan of vertical-slice phases, its domain terms settled with the project's glossary, revised with finished phases locked and audited against the code.
 
 **Build and ship**
 

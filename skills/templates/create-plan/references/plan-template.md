@@ -27,6 +27,15 @@
 | ---- | ----- |
 | ...  | [path/to/file](path/to/file) |
 
+### Terms
+
+<The glossary changes agreed while planning, each with its definition, its code identifier, the glossary it goes in and the phase that writes it. Drop the section if there are none.>
+
+- **<Term>** (new): <definition>. Code: `<Identifier>`. Glossary: `<path>`. Phase N.
+- **<Term>** (backfill): <definition>. Code: `<Identifier>`. Glossary: `<path>`. Phase 1.
+- **<Term>** (updated): <new definition, and what changed>. Glossary: `<path>`. Phase 1.
+- **<Term>** (renamed from `<OldIdentifier>`): <definition>. Glossary: `<path>`. Phase 1, the rename phase; or `Rename pending` when the rename is deferred.
+
 ### Contracts
 
 <Only the kinds that apply: endpoints, events, schemas, screens, test suites…>
@@ -65,6 +74,7 @@
 
 - [ ] <Concrete action, e.g. "Add column X to table Y">
 - [ ] <Next action>
+- [ ] Write this phase's **Terms** to their glossary (drop when it has none)
 
 **Verify:**
 
