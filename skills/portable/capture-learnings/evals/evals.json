@@ -1,0 +1,33 @@
+{
+	"skill_name": "capture-learnings",
+	"evals": [
+		{
+			"id": 1,
+			"fixture": "shop",
+			"prompt": "/capture-learnings I just reviewed this morning's invoices change: the agent called fetch() directly in src/features/invoices.js, so the requests went out without the auth header and every one came back 401. It's the second time this month (cancelOrder had the same bug), even though AGENTS.md says to go through apiClient. I've already switched it to apiClient.get myself.",
+			"followups": ["Yes: add the lint rule and its line in AGENTS.md, as you proposed."],
+			"expected_output": "Proposes an ESLint rule against calling fetch directly, with a message that names apiClient and an exemption for src/lib/api-client.js, plus a short line in AGENTS.md; waits; once approved, adds both, runs the linter and shows it passes, and doesn't commit.",
+			"expectations": [
+				"The first reply's main proposal for the fetch learning is a rule in eslint.config.js that reports direct calls to fetch (for example no-restricted-globals or no-restricted-syntax), presented first, ahead of any change to AGENTS.md",
+				"The proposed rule's message says what to do instead (call the backend through apiClient from src/lib/api-client.js), not only that fetch is forbidden",
+				"The first reply pairs the lint rule with a short line in AGENTS.md (a new line, or a sentence added to the apiClient convention) that explains the rule and says the linter enforces it",
+				"The first reply asks for approval before writing anything: transcript-1.jsonl has no Edit or Write of eslint.config.js or AGENTS.md",
+				"In the second turn the agent added the rule to eslint.config.js, with a message naming apiClient, and exempted src/lib/api-client.js, which has to call fetch: transcript-2.jsonl shows the edit, and the Status section of git-state.txt lists eslint.config.js as modified",
+				"In the second turn the agent added a short line about the rule to AGENTS.md: transcript-2.jsonl shows the edit, and the Status section of git-state.txt lists AGENTS.md as modified",
+				"In the second turn, after adding the rule, the agent ran the project's linter (npm run lint, or eslint) and it passed: transcript-2.jsonl shows the command and its output",
+				"Nothing was committed: git-state.txt shows no commits made during the run"
+			]
+		},
+		{
+			"id": 2,
+			"fixture": "shop",
+			"prompt": "/capture-learnings We lost an hour this morning: npm run test:integration failed in checkout with ECONNRESET, and we went through the retry code in src/lib/api-client.js before finding out the payments sandbox restarts every night between 00:00 and 00:30 UTC. Nothing was wrong with our code; rerunning after 00:30 passed.",
+			"expected_output": "Proposes a doc entry, near the integration tests in AGENTS.md's Checks section, about the sandbox's nightly restart and what to do about it; proposes no lint rule, test, type or hook for it, since nothing in the code shows the mistake; writes nothing before approval.",
+			"expectations": [
+				"The first reply proposes documenting the payments sandbox's nightly restart (00:00 to 00:30 UTC) and what to do about it (rerun after the window instead of debugging the code), in a doc such as AGENTS.md",
+				"The first reply proposes no lint rule, no new or changed test, no type change and no hook for this learning",
+				"The first reply asks for approval and writes nothing: the Status section of git-state.txt lists no changed or new files, and git-state.txt shows no commits made during the run"
+			]
+		}
+	]
+}

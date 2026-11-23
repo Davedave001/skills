@@ -122,7 +122,7 @@ You correct the agent, it does better, and tomorrow's session makes the same mis
 
 **The fix** is to write it into the project, where every agent and teammate reads it:
 
-- [`capture-learnings`](./skills/portable/capture-learnings/SKILL.md) pulls the corrections, gotchas and patterns out of a conversation, checks them against what's already documented and what the code does, and writes the ones you approve into `AGENTS.md`, a skill's references or the review docs. It also corrects the docs the conversation proved wrong.
+- [`capture-learnings`](./skills/portable/capture-learnings/SKILL.md) pulls the corrections, gotchas and patterns out of a conversation, checks them against what's already documented and what the code does, and writes the ones you approve into `AGENTS.md`, a skill's references or the review docs. When a machine can catch the mistake, it proposes a check first: a rule in the project's linter, a test or a hook, whose failure message says what to do instead. It also corrects the docs the conversation proved wrong.
 - [`retro`](./skills/portable/retro/SKILL.md) reads the last day or week of Claude Code, Codex and Copilot CLI sessions and proposes three to five concrete changes: a new skill, a rule, a workflow change.
 
 ### Too much change to review
@@ -143,7 +143,7 @@ An agent can write a thousand lines before you've read ten, and a change too big
 
 ### Tested like code
 
-A skill is a prompt, and prompts regress quietly. Evals run a skill in a throwaway repository, with a `gh` stub that never reaches GitHub, and grade it on the commits, branches and pull requests it leaves behind, not only on what it says. Trigger tests check that a description picks its skill over the siblings that compete for the same request. So far `commit`, `ship`, `create-plan`, `adversarial-review`, `adapt-skill` and `teach-me-why` have evals; the rest are still to come. CI validates every skill, agent and script, and behaviour in Codex and Copilot is tried in those agents, not assumed (see [what works where](#what-works-where)).
+A skill is a prompt, and prompts regress quietly. Evals run a skill in a throwaway repository, with a `gh` stub that never reaches GitHub, and grade it on the commits, branches and pull requests it leaves behind, not only on what it says. Trigger tests check that a description picks its skill over the siblings that compete for the same request. So far `commit`, `ship`, `create-plan`, `adversarial-review`, `adapt-skill`, `teach-me-why` and `capture-learnings` have evals; the rest are still to come. CI validates every skill, agent and script, and behaviour in Codex and Copilot is tried in those agents, not assumed (see [what works where](#what-works-where)).
 
 ## Where this fits: harness engineering
 
@@ -196,7 +196,7 @@ Templates are marked _template_.
 
 **Learn**
 
-- **[capture-learnings](./skills/portable/capture-learnings/SKILL.md)**: turn a conversation's corrections into project docs.
+- **[capture-learnings](./skills/portable/capture-learnings/SKILL.md)**: turn a conversation's corrections into project docs and checks.
 - **[retro](./skills/portable/retro/SKILL.md)**: a retrospective over a day or week of agent sessions.
 - **[teach-me-why](./skills/portable/teach-me-why/SKILL.md)**: a short HTML lesson on why the agent made one of this session's decisions.
 
