@@ -4,9 +4,11 @@ Agent skills for Claude Code, Codex and GitHub Copilot CLI that fit the project 
 
 These are the skills I use often enough to want in every project: to plan a change, build it in small steps, get it reviewed by someone who didn't write it, ship it, and make sure the next session doesn't repeat this one's mistakes.
 
-Process frameworks like [GSD](https://github.com/gsd-build/get-shit-done), [BMAD](https://github.com/bmad-code-org/BMAD-METHOD) and [Spec-Kit](https://github.com/github/spec-kit) give the agent a whole method: a sequence of phases, documents in their format, sometimes a cast of personas. That's a real help when you want a method handed to you, or a team to share one. The cost is that you adopt it whole, and when a step doesn't fit how your project works, you change your project or work around the method.
+Process frameworks like [GSD](https://github.com/gsd-build/get-shit-done), [BMAD](https://github.com/bmad-code-org/BMAD-METHOD) and [Spec-Kit](https://github.com/github/spec-kit) give the agent a whole method: a sequence of phases, documents in their format, sometimes a cast of personas. That's a real help when you want a method handed to you, or a team to share one, and they do more than these skills before any code exists: BMAD and GSD take you from a rough idea to requirements and a roadmap, and Spec-Kit keeps a spec that outlives the change. All three let you skip steps or take a shorter path, but each step reads the documents the one before it wrote, in the method's own format. When a step doesn't fit how your project works, you change your project or work around the method.
 
 These skills go the other way. Each one does one job, works on its own, and stops at the decisions that are yours to make. They have opinions too (vertical slices, outside-in TDD, one topic per commit, a second reviewer who didn't write the code), but each opinion lives in one skill you can skip, edit or replace. The price is that you put the flow together yourself, though [how they fit together](#how-they-fit-together) suggests one.
+
+Most of them deal with what happens after the code is written, where those frameworks have the least to say: a review by something that didn't write it, the pull request and its comments, shipping, and making sure the next session doesn't repeat this one's mistakes. They don't need a plan from `create-plan`, so they also work after one of the frameworks: plan with Spec-Kit or GSD, then review, ship and learn with these.
 
 They come in two kinds:
 
