@@ -17,7 +17,7 @@ They come in two kinds:
 
 ## Installation
 
-The plugin ships the portable skills and the agents they use, and installs update when its version changes. Templates aren't part of it: you install each one into a project (step 2). Pick one route per agent, because the plugin and skills.sh in the same agent give you every skill twice.
+The plugin ships the portable skills and the agents they use, and installs update when its version changes. Templates aren't part of it: you install each one into a project (step 3). Pick one route per agent, because the plugin and skills.sh in the same agent give you every skill twice.
 
 ### 1. Get the skills
 
@@ -74,7 +74,16 @@ Plugin skills keep their short names (`/commit`) unless another plugin uses the 
 
 The plugin also registers optional hooks, all off until you turn them on with an environment variable. One is [git-guardrails](./hooks/git-guardrails/README.md), which blocks the git commands the skills forbid: staging everything, force-pushing, and skipping signing or hooks. [What works where](#what-works-where) says which agents run them.
 
-### 2. Adapt a template in a project
+### 2. Prepare the project for reviews
+
+Two portable skills write the review docs and config that the reviewers and `ship` read. Both are optional and safe to run again, but run them before adapting the templates:
+
+- [`/setup-review-docs`](./skills/portable/setup-review-docs/SKILL.md) writes the project's known non-issues, pre-PR checklist and footguns, from its merged reviews and conventions.
+- [`/setup-ocr`](./skills/portable/setup-ocr/SKILL.md) configures the repo for `ocr-review`, and creates the review docs with `setup-review-docs` when there are none.
+
+The order matters for `ship`: `adapt-skill` keeps its pre-PR self-review only if the project already has a checklist. If you add one later, run `/adapt-skill ship` again to pick it up.
+
+### 3. Adapt a template in a project
 
 From inside the project, with the plugin or the `adapt-skill` skill installed, run [`/adapt-skill <skill>`](./skills/portable/adapt-skill/SKILL.md). It installs the template into the folder where the project keeps its skills (`.claude/skills/`, `.agents/skills/`, `.github/skills/` or `.gemini/skills/`), and, for Claude Code, any template agents it uses into `.claude/agents/`. It fills in every `CUSTOMIZE` marker from what it finds in the project and asks you about anything it can't work out. Run it again later to refresh the skill when the project's conventions or scripts change, or the template improves: it keeps your own edits.
 
