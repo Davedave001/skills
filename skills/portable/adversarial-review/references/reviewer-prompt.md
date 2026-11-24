@@ -32,6 +32,8 @@ See the changes with `git diff <base>...HEAD -- <file>` and, for uncommitted wor
 - Missing, stale, empty or null data.
 - Errors swallowed or turned into a wrong success.
 - State that can drift between components, instances or caches.
+- A fix that hides the symptom and leaves its cause: a retry, a broad catch, a sleep, a special case for the failing input.
+- Code that no desired outcome asks for: a feature, an option or an abstraction with a single user.
 - <one to three failure modes specific to this change, e.g. "token refresh during a retry", "pagination cursor drift between pages">
 - Anything else that looks off.
 
@@ -40,7 +42,7 @@ See the changes with `git diff <base>...HEAD -- <file>` and, for uncommitted wor
 A list of findings, each with:
 - File and line.
 - What's wrong, or could be.
-- A concrete scenario: the steps a user or caller takes that hit it.
+- A concrete scenario: the steps a user or caller takes that hit it. For code no outcome asks for, which breaks nothing, say instead which outcome it serves, or that none does.
 - Severity: blocker, serious or nit.
 - Certainty: sure or speculating.
 

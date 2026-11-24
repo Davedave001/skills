@@ -16,7 +16,7 @@ argument-hint: "[files or paths to review]"
 
 Starts reviewers with a fresh context that know only what the change **should** do, and asks them to find where it doesn't.
 
-It works because the session that wrote the code has a mental model that justifies every line. Reviewers briefed only on the desired outcomes can't lean on that justification, so they find the races, edge cases and cold starts the implementer's model glossed over.
+It works because the session that wrote the code has a mental model that justifies every line. Reviewers briefed only on the desired outcomes can't lean on that justification, so they find the races, edge cases and cold starts the implementer's model glossed over, and the code no outcome asked for.
 
 ## Step 1: Resolve the scope
 
@@ -33,7 +33,7 @@ Say the resolved scope back in one line and go on unless the user corrects it. I
 
 ## Step 2: Capture the desired outcomes
 
-The reviewers check the code against these, so they must be **outcome-shaped, not solution-shaped**. "When the user cancels mid-upload, the partial file is deleted and the quota restored" is good. "We track uploads in a map and clear it in `finally`" leaks the solution and neutralises the review.
+The reviewers check the code against these, so they must be **outcome-shaped, not solution-shaped**. "When the user cancels mid-upload, the partial file is deleted and the quota restored" is good. "We track uploads in a map and clear it in `finally`" leaks the solution and neutralises the review. For a bug fix, include the symptom that was reported ("uploads over 2 GB sometimes stop at 99%"), so a reviewer can tell whether the fix reaches its cause.
 
 Find them in this order:
 
@@ -74,6 +74,7 @@ Read the flagged code yourself before showing anything, and classify each findin
 - **Already handled:** the reviewer missed code that deals with it; cite the line.
 - **Self-corrected:** the reviewer raised it, then withdrew it in its own reasoning. Drop it.
 - **Speculative:** you can't confirm it either way. The user decides.
+- **Unrequested:** code that no desired outcome asks for. It breaks nothing, so there's no failure path to confirm: pass it to the user as the reviewer reported it, and let them decide. Don't weigh the reasons the code might have: the session that wrote it has one for every line, which is the bias this review exists to get around.
 
 In council and custom modes, first merge the findings across reviewers. Findings within about five lines of each other in the same file are usually one issue. Count how many reviewers found each one independently:
 
@@ -94,6 +95,7 @@ One table, most serious first:
 | 1 | src/upload.ts:42 | Cancel during retry leaves the quota reserved | 3/3 strong | blocker | Real | fix |
 | 2 | src/upload.ts:88 | Timer not cleared on error | 1/3 solo | serious | Real | fix |
 | 3 | src/quota.ts:17 | Negative quota on double refund | 1/3 solo | nit | Speculative | you decide |
+| 4 | src/upload.ts:12 | `chunkSize` option that no outcome asks for | 1/3 solo | nit | Unrequested | you decide |
 ```
 
 Drop the consensus column in quick mode. Below the table, in council and custom modes, add a short summary: how many issues, how many reached consensus, and any area every reviewer agreed is correct, which is worth knowing too.
@@ -104,4 +106,4 @@ Drop the consensus column in quick mode. Below the table, in council and custom 
 
 - A small edit whose correctness is clear: the overhead isn't worth it.
 - Pure styling changes, with no behaviour to get wrong.
-- When the user wants an opinion on direction or design, not a bug hunt.
+- When the user wants an opinion on direction or design. The review checks the change against the desired outcomes: it finds where the change falls short of them and what it adds beyond them, not a better design.

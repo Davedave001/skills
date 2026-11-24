@@ -17,6 +17,49 @@
 				"A reply reports, as a real finding, that a percent above 100 isn't capped so discount() returns a negative amount, and asks which findings to fix",
 				"Nothing was changed or committed: feature/discount on origin and locally is still at the fixture's last commit and git status is clean"
 			]
+		},
+		{
+			"id": 2,
+			"fixture": "orders-retry",
+			"prompt": "council review of this branch before I open the PR. It fixes a bug: opening an order right after placing it sometimes said the order didn't exist. What it should do: once placeOrder resolves, getOrder finds the order; getOrder for an id that was never placed returns null.",
+			"followups": [
+				"Yes, those outcomes are right. Run the council on the focus areas you pick."
+			],
+			"expected_output": "Runs a council whose focus areas include diagnosis, since the change is a bug fix. Reports as a real finding that the retry in getOrder hides the symptom: placeOrder never awaits store.save, so the lookup races the write, and the fix is to await it. Asks which findings to fix, and changes nothing.",
+			"expectations": [
+				"A transcript shows the agent starting one reviewer subagent per focus area (Agent tool calls), and one reviewer's prompt makes diagnosis its primary focus: whether the fix reaches the cause of the symptom or only hides it",
+				"A reply reports, as a real finding, that the retry in getOrder hides the symptom and leaves its cause: placeOrder doesn't await store.save, so the lookup races the write, and the save should be awaited instead",
+				"Nothing was changed or committed: fix/order-not-found on origin and locally is still at the fixture's last commit, and the Status section of git-state.txt is empty"
+			]
+		},
+		{
+			"id": 3,
+			"fixture": "invoice-export",
+			"prompt": "council review of this branch. What it should do: exportInvoices(customerId, path) writes the customer's invoices to a CSV file at path: a header row date,number,amount, then one row per invoice, oldest first, with amounts in euros to two decimals (1999 cents is 19.99).",
+			"followups": [
+				"Yes, those outcomes are right. Run the council on the focus areas you pick."
+			],
+			"expected_output": "Runs a council whose focus areas include scope, since the change adds options. Reports the format option with its JSON renderer, and the delimiter option, as code no desired outcome asks for, and leaves them to the user to decide rather than calling them bugs. Changes nothing.",
+			"expectations": [
+				"A transcript shows the agent starting one reviewer subagent per focus area (Agent tool calls), and one reviewer's prompt makes scope its primary focus: code the change adds that no desired outcome asks for",
+				"A reply reports the `format` option with its JSON renderer, or the `delimiter` option, as code that no desired outcome asks for, and leaves it to the user to decide (for example with the verdict Unrequested and the action \"you decide\") instead of presenting it as a bug to fix",
+				"Nothing was changed or committed: feature/invoice-export on origin and locally is still at the fixture's last commit, and the Status section of git-state.txt is empty"
+			]
+		},
+		{
+			"id": 4,
+			"fixture": "discount-branch",
+			"prompt": "adversarial review of this branch, custom mode with two reviewers: one on scope, one on edge cases and boundaries. What it should do: discount(amount, percent) returns amount reduced by percent percent; a percent above 100 counts as 100, so the result is never negative; a negative percent throws a RangeError.",
+			"followups": [
+				"Yes, those outcomes are right."
+			],
+			"expected_output": "Starts two reviewers, one on scope and one on edge cases. Reports the uncapped percent as a real finding. Reports nothing as code no outcome asks for: the branch adds discount() and its RangeError, both in the outcomes. Changes nothing.",
+			"expectations": [
+				"A transcript shows the agent starting exactly two reviewer subagents (Agent tool calls), one of whose prompts makes scope its primary focus",
+				"A reply reports, as a real finding, that a percent above 100 isn't capped so discount() returns a negative amount",
+				"No finding in the replies is reported as code that no desired outcome asks for (no Unrequested verdict, no \"not asked for\" finding): discount() and its RangeError are both in the outcomes",
+				"Nothing was changed or committed: feature/discount on origin and locally is still at the fixture's last commit and git status is clean"
+			]
 		}
 	]
 }

@@ -36,20 +36,30 @@ Hot paths, unbounded growth, expensive work repeated. Look for: queries in loops
 
 User input, authentication and authorisation, trust boundaries. Look for: unvalidated input reaching queries, shells, file paths or HTML; missing permission checks on protected paths; secrets in logs or responses; data crossing a trust boundary without sanitising.
 
-### 9. Cross-references and consistency
+### 9. Diagnosis
+
+Bug fixes, checked against the symptom the outcomes describe. Look for: a fix that hides the symptom and leaves its cause (a retry, a broad catch, a sleep or a longer timeout, a disabled check or test, a special case for the failing input); a fix aimed at a different problem than the one described. Find the cause yourself, in the code around the fix, and give the scenario where it fires again: the retries run out under load, the next input takes the path the special case skipped.
+
+### 10. Scope
+
+What the change adds beyond the desired outcomes. Look for: features, options, flags or configuration that no outcome asks for; an abstraction (an interface, a base class, a factory, a plugin point) with a single user. Code that breaks nothing still counts here, so these findings name the outcome the code serves, or say none does, where others give a failure scenario. Judge against the outcomes, not taste: naming, style and a design you'd have chosen differently belong to another review.
+
+### 11. Cross-references and consistency
 
 For skills, prompts and docs. Look for: references to files, skills, sections or commands that don't exist or were renamed; descriptions that contradict the instructions; step numbers that skip or repeat; two places in the same file that disagree.
 
-### 10. Completeness and gaps
+### 12. Completeness and gaps
 
 For skills, prompts and docs. Look for: instructions that assume context the agent won't have (a subagent has no conversation), flags or modes mentioned but never wired into the steps, tools or scripts used with no fallback when missing, no answer for what happens when the user says no or gives unexpected input.
 
-### 11. Triggering
+### 13. Triggering
 
 For skills. Look for: common phrasings that should trigger the skill but aren't in its description, descriptions so broad they steal from other skills, overlapping triggers where the wrong skill fires, a description that promises what the steps don't deliver.
 
 ## Choosing areas
 
 - **Code:** always include edge cases and boundaries, the area that finds the most. A state machine gets concurrency, state coordination and edge cases; an API integration gets data integrity, error handling and edge cases.
+- **A bug fix:** include diagnosis, since hiding the symptom is the risk.
+- **New options, configuration, abstractions or dependencies:** include scope.
 - **Skills, prompts and docs:** always include cross-references and consistency, the most common failure. Add completeness and triggering.
 - **More reviewers:** with four or five, add one or two areas that are less obvious, to catch surprises. With six or more, overlap is fine: independent agreement is a strong signal.
