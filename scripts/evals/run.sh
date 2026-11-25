@@ -5,8 +5,8 @@ set -euo pipefail
 # grades them.
 #
 # Usage:
-#   scripts/evals/run.sh <skill> [--keep] [--no-grade] [eval-id...]
-#   scripts/evals/run.sh <skill> --triggers [--keep]
+#   scripts/evals/run.sh <skill> [--keep] [--no-grade] [--from <dir>] [eval-id...]
+#   scripts/evals/run.sh <skill> --triggers [--keep] [--from <dir>]
 #
 # For each eval in <skill>/evals/evals.json, it:
 #   1. builds the eval's fixture (evals/fixtures/<fixture>.sh) in a temporary
@@ -29,6 +29,10 @@ set -euo pipefail
 # one), with the skill installed as in step 2 and this repo's plugin loaded,
 # so its sibling skills compete for the query. A run stops at the first tool
 # call: the query triggered the skill if that call invokes it.
+#
+# --from takes the skill, its agents and the plugin from <dir>, an export of
+# this repo at another commit, instead of from this checkout; compare.sh uses
+# it. The results go next to the skill in <dir>.
 #
 # --keep keeps the temporary folders for inspection. EVAL_MODEL and
 # EVAL_GRADER_MODEL choose the models; EVAL_TRIGGER_RUNS (3) and
@@ -60,11 +64,17 @@ keep=0
 grade=1
 triggers=0
 ids=""
+src="$repo"
 while [ $# -gt 0 ]; do
 	case "$1" in
 	--keep) keep=1 ;;
 	--no-grade) grade=0 ;;
 	--triggers) triggers=1 ;;
+	--from)
+		[ $# -ge 2 ] || usage
+		src="$(cd "$2" && pwd)"
+		shift
+		;;
 	-h | --help) usage ;;
 	[0-9]*) ids="$ids $1" ;;
 	*) usage ;;
@@ -75,8 +85,8 @@ done
 skill_dir=""
 bucket=""
 for b in portable templates drafts; do
-	if [ -f "$repo/skills/$b/$skill/SKILL.md" ]; then
-		skill_dir="$repo/skills/$b/$skill"
+	if [ -f "$src/skills/$b/$skill/SKILL.md" ]; then
+		skill_dir="$src/skills/$b/$skill"
 		bucket="$b"
 	fi
 done
@@ -144,7 +154,7 @@ prepare() {
 	fi
 
 	plugin_args=()
-	[ "$with_plugin" = true ] && plugin_args=(--plugin-dir "$repo")
+	[ "$with_plugin" = true ] && plugin_args=(--plugin-dir "$src")
 	# A portable skill comes with the plugin; anything else is installed into
 	# the project, as adapt-skill would, with the agents it uses.
 	if [ "$with_plugin" != true ] || [ "$bucket" != portable ]; then
@@ -153,7 +163,7 @@ prepare() {
 		rm -rf "$work/.claude/skills/$skill/evals" "$work/.claude/skills/$skill/SETUP.md"
 		installed="/.claude/skills/$skill/"
 		for agent in $(skill_agents "$skill_dir/SKILL.md"); do
-			agent_file="$(find "$repo/agents/templates" "$repo/agents/portable" -name "$agent.md" -print -quit)"
+			agent_file="$(find "$src/agents/templates" "$src/agents/portable" -name "$agent.md" -print -quit)"
 			[ -n "$agent_file" ] || continue
 			mkdir -p "$work/.claude/agents"
 			cp "$agent_file" "$work/.claude/agents/"

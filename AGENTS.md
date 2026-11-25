@@ -42,6 +42,7 @@ scripts/
 	check.sh                     validate every skill, agent and README
 	lib.sh                       helpers shared by the scripts
 	evals/run.sh                 run a skill's evals in throwaway repositories and grade them
+	evals/compare.sh             run a skill's evals on an earlier version and on the working tree, and compare
 ```
 
 Each skill is a folder with a `SKILL.md` and any reference files it loads on demand, plus its evals in `evals/`.
@@ -123,7 +124,7 @@ Write expectations that can be checked against `outputs/git-state.txt` (branches
 
 Run them with `scripts/evals/run.sh <skill> [eval-id...]`, or `--triggers`. Each run uses a temporary config folder, so it needs `CLAUDE_CODE_OAUTH_TOKEN` (from `claude setup-token`) or `ANTHROPIC_API_KEY`. Runs cost model usage, so CI only validates the files.
 
-To see what a change to a skill does, also run its evals against the skill as it was. Before editing, export the last commit with `git archive HEAD | tar -x -C <a scratch folder>`. Once the evals are written, copy `evals.json` and the fixtures into that copy and run its own `scripts/evals/run.sh`. An expectation the old skill also passes doesn't test the change: tighten it or its fixture, or say what the evals don't show. Keep the fixtures' scenarios out of the skill's examples, or the eval passes because the skill was handed the answer.
+To see what a change to a skill does, also run its evals against the skill as it was: `scripts/evals/compare.sh <skill> [--base <ref>] [eval-id...]` exports the skill at `<ref>` (`origin/main` by default), runs the working tree's evals on both versions and shows, per expectation, what was gained or lost. Before you commit, `--base HEAD` compares with the last commit. An expectation the old skill also passes doesn't test the change: tighten it or its fixture, or say what the evals don't show. Keep the fixtures' scenarios out of the skill's examples, or the eval passes because the skill was handed the answer.
 
 ## CUSTOMIZE markers
 
