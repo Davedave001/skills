@@ -106,7 +106,7 @@ grades() {
 		[ -f "$f" ] || continue
 		id="${f%/grading.json}"
 		id="${id##*/eval-}"
-		jq -r --arg id "$id" '.expectations[] | "\($id)\t\(.text | gsub("[\t\n]"; " "))\t\(.passed == true)"' "$f"
+		jq -r --arg id "$id" '.expectations[]? | select(.text | type == "string") | "\($id)\t\(.text | gsub("[\t\n]"; " "))\t\(.passed == true)"' "$f"
 	done
 }
 grades "$kept" >"$tmp/before"
