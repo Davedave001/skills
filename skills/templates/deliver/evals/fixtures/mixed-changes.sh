@@ -5,7 +5,7 @@ set -euo pipefail
 # together: the timezone fix in src/time.js and an unrelated Node bump in the
 # CI workflow.
 
-# shellcheck source=skills/templates/ship/evals/fixtures/base.sh
+# shellcheck source=skills/templates/deliver/evals/fixtures/base.sh
 . "$(dirname "$0")/base.sh"
 
 ship_base "$1"

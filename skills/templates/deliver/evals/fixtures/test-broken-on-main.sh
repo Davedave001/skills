@@ -6,7 +6,7 @@ set -euo pipefail
 # where its test expects a number. The uncommitted change is the timezone
 # fix, which touches neither.
 
-# shellcheck source=skills/templates/ship/evals/fixtures/base.sh
+# shellcheck source=skills/templates/deliver/evals/fixtures/base.sh
 . "$(dirname "$0")/base.sh"
 
 ship_base "$1"

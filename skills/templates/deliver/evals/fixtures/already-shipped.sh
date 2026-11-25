@@ -5,7 +5,7 @@ set -euo pipefail
 # an open pull request (#7). The working tree is clean. main has moved on
 # since the branch was pushed, so rebasing it would rewrite a shipped branch.
 
-# shellcheck source=skills/templates/ship/evals/fixtures/base.sh
+# shellcheck source=skills/templates/deliver/evals/fixtures/base.sh
 . "$(dirname "$0")/base.sh"
 
 ship_base "$1"

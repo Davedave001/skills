@@ -24,7 +24,7 @@ Local findings come from `ocr-review --local`, saved for the current branch on t
 
 - **Step 1:** gather the findings with `node <skill-dir>/scripts/pr-threads.mjs local-list`. There are no review bodies or PR body to read. If it lists nothing, say so and stop.
 - **Step 3:** the **Source** column is `Local OCR` and the item number is the finding's `FINDING_ID`. Confirming means the fixes are committed locally, not pushed, and every finding marked closed.
-- **Step 5:** commit, but don't push. Pushing is the user's call, or the next step of `ship`.
+- **Step 5:** commit, but don't push. Pushing is the user's call, or the next step of `deliver`.
 - **Steps 6 and 7:** instead of replying and resolving, close each finding with a note: `node <skill-dir>/scripts/pr-threads.mjs local-resolve <FINDING_ID> "<note>"`. For an agreed one, the note says what changed and in which commit; for a disagreed one, why the code is right. Both get closed, since no other reviewer is waiting on them. Leave an item the user excluded open.
 - **Step 8:** offer `/ocr-review --local --incremental`.
 

@@ -5,7 +5,7 @@ description: >-
   as a GitHub review. OCR picks the reviewable files and the per-path rules (from `.opencodereview/` when the repo has
   one); a fresh subagent with no implementation context does the review on the user's Claude Code or GitHub Copilot
   subscription, so no API cost. Needs Claude Code or Copilot CLI, the agents that load its reviewer agent. With no PR, or with `--local`, it reviews the commits not yet pushed and saves the findings locally
-  instead, for projects that push straight to the default branch. Use this skill when a hook or the ship skill asks
+  instead, for projects that push straight to the default branch. Use this skill when a hook or the deliver skill asks
   for it, when the user asks to "review the PR with OCR", "run the OCR review", "OCR review before I push" or
   "re-review the new commits", or invokes `/ocr-review` (optionally with a PR number, `--local` and `--incremental`).
 metadata:

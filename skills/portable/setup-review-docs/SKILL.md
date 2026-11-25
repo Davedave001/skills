@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Setup review docs
 
-Writes the docs that reviewers (human, `ocr-review`, `adversarial-review`) and the people writing the code read, and that `ship`, `capture-learnings` and `address-pr-comments` keep using:
+Writes the docs that reviewers (human, `ocr-review`, `adversarial-review`) and the people writing the code read, and that `deliver`, `capture-learnings` and `address-pr-comments` keep using:
 
 - **`KNOWN_NON_ISSUES.md`**: patterns that look like defects but are deliberate. Recommended: it is what stops repeated false positives.
 - **`PRE_PR_REVIEW.md`**: the defect types this repo keeps getting, as a checklist. Recommended.

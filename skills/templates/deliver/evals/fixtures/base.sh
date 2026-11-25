@@ -1,5 +1,5 @@
 # shellcheck shell=bash
-# Shared by the ship fixtures; sourced, not run. Builds a small Node project
+# Shared by the deliver fixtures; sourced, not run. Builds a small Node project
 # that matches the template's example content: it ships through pull requests
 # against main, uses Conventional Commits, and has `npm run format`, `npm run
 # lint` and `npm test` (the checks before pushing), plus the review docs the

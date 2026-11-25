@@ -1,6 +1,6 @@
-# Setting up ship
+# Setting up deliver
 
-Guidance for `adapt-skill` when it installs or refreshes the `ship` template. It is not copied into the project.
+Guidance for `adapt-skill` when it installs or refreshes the `deliver` template. It is not copied into the project.
 
 ## What to look for
 

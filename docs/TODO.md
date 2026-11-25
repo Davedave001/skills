@@ -14,7 +14,7 @@ Codex dropped plugin hooks, and we found out only by trying it in `try-in-agent`
 
 ## Add `argument-hint` to the skills that take arguments
 
-`ocr-review` (a PR number, `--local`, `--incremental`), `address-pr-comments` (a PR number or URL, `--local`), `retro` (`day`, `week`) and `ship` (`--base <branch>`) take arguments but have no `argument-hint`, so Claude Code's `/` menu doesn't show them. Six skills already have one, written as `argument-hint: "[...]"`.
+`ocr-review` (a PR number, `--local`, `--incremental`), `address-pr-comments` (a PR number or URL, `--local`), `retro` (`day`, `week`) and `deliver` (`--base <branch>`) take arguments but have no `argument-hint`, so Claude Code's `/` menu doesn't show them. Six skills already have one, written as `argument-hint: "[...]"`.
 
 ## Add the skills.sh badge to the README
 

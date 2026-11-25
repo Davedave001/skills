@@ -9,7 +9,7 @@ description: >-
 argument-hint: "[plan folder | plan file]"
 metadata:
   internal: true
-  template-revision: "2"
+  template-revision: "3"
 ---
 
 # Execute a plan
@@ -44,7 +44,7 @@ Before starting the phase:
 
 ## Step 3: Set up the branch
 
-<!-- CUSTOMIZE: branching. If the project has a ship skill, follow its branch convention (feature branches and their naming, or committing straight to the main branch). Otherwise use what the project's docs and history show. Include the ticket rule if there is one. -->
+<!-- CUSTOMIZE: branching. If the project has a deliver skill (named ship before), follow its branch convention (feature branches and their naming, or committing straight to the main branch). Otherwise use what the project's docs and history show. Include the ticket rule if there is one. -->
 Work on a feature branch, one per plan: on a board, each plan gets its own branch from the base branch, not from the previous plan's branch. If the current branch already belongs to this plan (you're resuming), stay on it. Otherwise create `<short-kebab-slug>` from the base branch, named after the plan, with `git switch -c`. Never switch branches mid-phase.
 
 ## Step 4: Execute the phase

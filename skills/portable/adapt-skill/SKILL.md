@@ -1,6 +1,6 @@
 ---
 name: adapt-skill
-description: Install a skill template into this project, or refresh one already installed, by filling in its CUSTOMIZE markers (and those of the template agents it uses) from the project's code, config and conventions. Run it again when the project's conventions or scripts change, or the template improves. Use when the user asks to add, set up, adapt, customise or refresh a skill template (for example "set up ship", "/adapt-skill ship"), or when a skill in this project still contains `<!-- CUSTOMIZE:` markers.
+description: Install a skill template into this project, or refresh one already installed, by filling in its CUSTOMIZE markers (and those of the template agents it uses) from the project's code, config and conventions. Run it again when the project's conventions or scripts change, or the template improves. Use when the user asks to add, set up, adapt, customise or refresh a skill template (for example "set up deliver", "/adapt-skill deliver"), or when a skill in this project still contains `<!-- CUSTOMIZE:` markers.
 argument-hint: "[template-name]"
 ---
 

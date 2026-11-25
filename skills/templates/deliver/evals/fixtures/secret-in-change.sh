@@ -6,7 +6,7 @@ set -euo pipefail
 # token is plainly fake and has no real provider's prefix, so no secret
 # scanner mistakes it for a real one.
 
-# shellcheck source=skills/templates/ship/evals/fixtures/base.sh
+# shellcheck source=skills/templates/deliver/evals/fixtures/base.sh
 . "$(dirname "$0")/base.sh"
 
 ship_base "$1"

@@ -5,7 +5,7 @@ set -euo pipefail
 # the timezone fix finished but uncommitted, so "ship it" has something to
 # ship.
 
-# shellcheck source=skills/templates/ship/evals/fixtures/base.sh
+# shellcheck source=skills/templates/deliver/evals/fixtures/base.sh
 . "$(dirname "$0")/base.sh"
 
 ship_base "$1"

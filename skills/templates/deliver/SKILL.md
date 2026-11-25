@@ -1,25 +1,25 @@
 ---
-name: ship
+name: deliver
 description: >-
   Take finished work from the working tree to shipped in one move: commit it, bring the branch up to date, push, and,
   when the project ships through pull requests, open the PR and see it through the first review round. Use whenever the
-  user wants to "ship", "ship it", "open a PR", "raise a PR", "create a pull request", "commit and push this", "get this
-  reviewed", "it's ready for review", or invokes `/ship` (optionally with `--base <branch>`). Reach for it the moment the
-  user says a chunk of work is finished or ready for review, before looking at the changes yourself: it reads the state
-  itself.
+  user wants to "ship", "ship it", "deliver", "open a PR", "raise a PR", "create a pull request", "commit and push this",
+  "get this reviewed", "it's ready for review", or invokes `/deliver` (optionally with `--base <branch>`). Reach for it
+  the moment the user says a chunk of work is finished or ready for review, before looking at the changes yourself: it
+  reads the state itself.
 metadata:
   internal: true
-  template-revision: "6"
+  template-revision: "7"
 ---
 
-# Ship
+# Deliver
 
 Gets finished work shipped with as little ceremony as possible: the safe, conventional choices (branch name, what to commit, commit message, PR title and body) are made automatically, so the user goes from a dirty working tree to a shipped change in one invocation.
 
 **Operating principle:** decide and act, don't interrogate. Stop and ask only for the judgment calls the user must own: a secret inside the change, files that look unrelated to the change, a rebase conflict, a check that fails for a reason the change didn't cause or that you couldn't fix, or a review finding that needs a product decision.
 
 <!-- CUSTOMIZE: how this project ships. Keep one of the two variants, "pull requests" or "main branch", in this paragraph and in steps 2, 4, 5, 6, 7 and 8, and delete the other. Set the base branch to the remote's default branch (`git remote show origin`). -->
-This project ships **through pull requests** against `main`. `ship` accepts `--base <branch>` to target another base. (Main-branch variant: this project ships **by committing straight to `main`**: no feature branches, no pull requests.)
+This project ships **through pull requests** against `main`. `deliver` accepts `--base <branch>` to target another base. (Main-branch variant: this project ships **by committing straight to `main`**: no feature branches, no pull requests.)
 
 ## Step 1: Read the current state
 
@@ -42,7 +42,7 @@ Name the branch with a short kebab-case slug of the change, such as `fix-timezon
 
 ## Step 3: Commit
 
-**Keep the change coherent.** Look at the changed files. If some clearly don't belong to the same change as the rest (a fix to one feature plus an unrelated CI edit), ask whether to include them. The default is one coherent change per ship.
+**Keep the change coherent.** Look at the changed files. If some clearly don't belong to the same change as the rest (a fix to one feature plus an unrelated CI edit), ask whether to include them. The default is one coherent change per run.
 
 **Keep secrets out.** Never stage a file of local secrets (`.env` and its variants, private keys, credential files) unless the user asks for it: leave it out without asking, and say so in the report. Stop and ask only when a secret is inside what you would otherwise commit: a token, key or password in a changed or new file that belongs to the change.
 
@@ -131,9 +131,9 @@ gh pr create --base "<base>" --title "<title>" --body "<body>"
 **OCR review.** If the `ocr-review` skill is available, run it on the PR right after it is opened, without asking. Skip it for a docs-only PR or a very small, obvious change, and say so. If the OCR hook is on, it asks for the same review: run it once.
 
 <!-- CUSTOMIZE: other reviewers or checks to wait for besides OCR: a review bot, required CI checks. Find them on recent PRs (`gh pr checks <n>`, the authors of their reviews). Keep the wait bounded. Delete this paragraph if there are none. -->
-**Checks.** Wait for the required CI checks, bounded: poll `gh pr checks <n>` about every 30 seconds for at most 10 minutes. If they haven't finished, report them as pending; never hang the ship on a slow check. A failing check is a finding.
+**Checks.** Wait for the required CI checks, bounded: poll `gh pr checks <n>` about every 30 seconds for at most 10 minutes. If they haven't finished, report them as pending; never hang the run on a slow check. A failing check is a finding.
 
-**Address the findings.** If the `address-pr-comments` skill is available, run it on the PR to work through the review's findings. It shows a verdict table and waits for the user's confirmation before changing anything. Otherwise, list the findings in the report and leave them for the user. One bounded review pass per ship: don't wait for a second round.
+**Address the findings.** If the `address-pr-comments` skill is available, run it on the PR to work through the review's findings. It shows a verdict table and waits for the user's confirmation before changing anything. Otherwise, list the findings in the report and leave them for the user. One bounded review pass per run: don't wait for a second round.
 
 ## Step 9: Report
 

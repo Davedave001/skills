@@ -8,7 +8,7 @@ set -euo pipefail
 # so the audit test passes on main and throws with the change. Only the test
 # shows the number, so running it, not reading the code, is what finds this.
 
-# shellcheck source=skills/templates/ship/evals/fixtures/base.sh
+# shellcheck source=skills/templates/deliver/evals/fixtures/base.sh
 . "$(dirname "$0")/base.sh"
 
 ship_base "$1"

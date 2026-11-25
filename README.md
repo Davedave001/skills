@@ -76,12 +76,12 @@ The plugin also registers optional hooks, all off until you turn them on with an
 
 ### 2. Prepare the project for reviews
 
-Two portable skills write the review docs and config that the reviewers and `ship` read. Both are optional and safe to run again, but run them before adapting the templates:
+Two portable skills write the review docs and config that the reviewers and `deliver` read. Both are optional and safe to run again, but run them before adapting the templates:
 
 - [`/setup-review-docs`](./skills/portable/setup-review-docs/SKILL.md) writes the project's known non-issues, pre-PR checklist and footguns, from its merged reviews and conventions.
 - [`/setup-ocr`](./skills/portable/setup-ocr/SKILL.md) configures the repo for `ocr-review`, and creates the review docs with `setup-review-docs` when there are none.
 
-The order matters for `ship`: `adapt-skill` keeps its pre-PR self-review only if the project already has a checklist. If you add one later, run `/adapt-skill ship` again to pick it up.
+The order matters for `deliver`: `adapt-skill` keeps its pre-PR self-review only if the project already has a checklist. If you add one later, run `/adapt-skill deliver` again to pick it up.
 
 ### 3. Adapt a template in a project
 
@@ -139,11 +139,11 @@ An agent can write a thousand lines before you've read ten, and a change too big
 
 "Never force-push" in `AGENTS.md` holds until the model slips.
 
-**The fix** is the optional [git-guardrails](./hooks/git-guardrails/README.md) hook, which turns the git rules the skills state into hard denials: staging everything, force-pushing, skipping signing or hooks. `capture-learnings` and `retro` do the same for your project's rules: one that was written down and broken anyway becomes a lint rule, test or hook. And the skills that act on their own, like [`ship`](./skills/templates/ship/SKILL.md), stop for the calls that are yours: a secret in the diff, a rebase conflict, a review finding that needs a product decision.
+**The fix** is the optional [git-guardrails](./hooks/git-guardrails/README.md) hook, which turns the git rules the skills state into hard denials: staging everything, force-pushing, skipping signing or hooks. `capture-learnings` and `retro` do the same for your project's rules: one that was written down and broken anyway becomes a lint rule, test or hook. And the skills that act on their own, like [`deliver`](./skills/templates/deliver/SKILL.md), stop for the calls that are yours: a secret in the diff, a rebase conflict, a review finding that needs a product decision.
 
 ### Tested like code
 
-A skill is a prompt, and prompts regress quietly. Evals run a skill in a throwaway repository, with a `gh` stub that never reaches GitHub, and grade it on the commits, branches and pull requests it leaves behind, not only on what it says. Trigger tests check that a description picks its skill over the siblings that compete for the same request. So far `commit`, `ship`, `create-plan`, `adversarial-review`, `adapt-skill`, `teach-me-why` and `capture-learnings` have evals; the rest are still to come. CI validates every skill, agent and script, and behaviour in Codex and Copilot is tried in those agents, not assumed (see [what works where](#what-works-where)).
+A skill is a prompt, and prompts regress quietly. Evals run a skill in a throwaway repository, with a `gh` stub that never reaches GitHub, and grade it on the commits, branches and pull requests it leaves behind, not only on what it says. Trigger tests check that a description picks its skill over the siblings that compete for the same request. So far `commit`, `deliver`, `create-plan`, `adversarial-review`, `adapt-skill`, `teach-me-why` and `capture-learnings` have evals; the rest are still to come. CI validates every skill, agent and script, and behaviour in Codex and Copilot is tried in those agents, not assumed (see [what works where](#what-works-where)).
 
 ## Where this fits: harness engineering
 
@@ -156,7 +156,7 @@ In those terms:
 - **The loop that improves the harness:** `capture-learnings`, `retro` and `setup-review-docs`, which turn what went wrong into a guide, and, when a machine can catch it, into a sensor in the project's own linter, tests or hooks.
 - **Templates** have the problem Böckeler raises for harness templates: project copies fall behind as the template improves. `adapt-skill` refreshes a copy and keeps the project's edits.
 
-What the skills don't give you are the sensors that matter most: your project's tests, types and linters. `capture-learnings` and `retro` add rules to them, `execute-plan` runs the tests at every step and `ship` runs the checks the project picks before each push, but none of them can make up for checks the project doesn't have.
+What the skills don't give you are the sensors that matter most: your project's tests, types and linters. `capture-learnings` and `retro` add rules to them, `execute-plan` runs the tests at every step and `deliver` runs the checks the project picks before each push, but none of them can make up for checks the project doesn't have.
 
 ## How they fit together
 
@@ -166,7 +166,7 @@ A feature, start to finish. Each step works without the others, so use the ones 
 2. [`write-acceptance-criteria`](./skills/templates/write-acceptance-criteria/SKILL.md) from the tickets, specs, designs and code, flagging the conflicts between them.
 3. [`create-plan`](./skills/templates/create-plan/SKILL.md), then [`execute-plan`](./skills/templates/execute-plan/SKILL.md) phase by phase.
 4. [`adversarial-review`](./skills/portable/adversarial-review/SKILL.md) before it leaves your machine.
-5. [`ship`](./skills/templates/ship/SKILL.md): commit, rebase, run the checks, push, open the pull request and run the first [`ocr-review`](./skills/portable/ocr-review/SKILL.md) round.
+5. [`deliver`](./skills/templates/deliver/SKILL.md): commit, rebase, run the checks, push, open the pull request and run the first [`ocr-review`](./skills/portable/ocr-review/SKILL.md) round.
 6. [`address-pr-comments`](./skills/portable/address-pr-comments/SKILL.md) until the review is done.
 7. [`capture-learnings`](./skills/portable/capture-learnings/SKILL.md) at the end, and [`retro`](./skills/portable/retro/SKILL.md) once a week.
 
@@ -184,7 +184,7 @@ Templates are marked _template_.
 
 - **[execute-plan](./skills/templates/execute-plan/SKILL.md)** _template_: one phase at a time, with outside-in TDD and small commits.
 - **[commit](./skills/portable/commit/SKILL.md)**: small, focused, signed commits in the repo's style. Never pushes.
-- **[ship](./skills/templates/ship/SKILL.md)** _template_: from a dirty working tree to a pull request with its first review round, or to a reviewed push to `main`, in one move.
+- **[deliver](./skills/templates/deliver/SKILL.md)** _template_: from a dirty working tree to a pull request with its first review round, or to a reviewed push to `main`, in one move.
 
 **Review**
 
