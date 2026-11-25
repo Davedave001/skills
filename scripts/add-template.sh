@@ -57,6 +57,16 @@ project="${args[1]:-.}"
 src="$repo/skills/templates/$skill"
 
 if [ ! -f "$src/SKILL.md" ]; then
+	# A template that was renamed lists its old names.
+	for other in "$repo"/skills/templates/*/SKILL.md; do
+		for former in $(metadata_field "$other" former-names); do
+			if [ "$former" = "$skill" ]; then
+				renamed="$(basename "$(dirname "$other")")"
+				echo "error: the '$skill' template is now called '$renamed'; run: $0 $renamed" >&2
+				exit 1
+			fi
+		done
+	done
 	echo "error: no template named '$skill'. Available:" >&2
 	find "$repo/skills/templates" -mindepth 2 -maxdepth 2 -name SKILL.md -exec dirname {} \; |
 		sed 's|.*/|  |' | sort >&2
@@ -113,18 +123,25 @@ cp -R "$src" "$dest"
 # The template's evals test the template, not the project's adapted copy, and
 # SETUP.md only guides adapt-skill.
 rm -rf "$dest/evals" "$dest/SETUP.md"
-# metadata.internal only hides the template from the skills CLI in this repo;
-# the project's copy is not a template once adapted. No sed -i: GNU and BSD
+# metadata.internal only hides the template from the skills CLI in this repo,
+# and metadata.former-names only finds copies of a renamed template; the
+# project's copy is not a template once adapted. No sed -i: GNU and BSD
 # disagree on its syntax.
 tmp="$(mktemp)"
 awk '
 	/^---$/ { fences++ }
 	fences == 1 && /^[[:space:]]+internal:[[:space:]]*true[[:space:]]*$/ { next }
+	fences == 1 && /^[[:space:]]+former-names:/ { next }
 	{ print }
 ' "$dest/SKILL.md" >"$tmp"
 cat "$tmp" >"$dest/SKILL.md"
 rm -f "$tmp"
 echo "copied $skill to $dest"
+for former in $(metadata_field "$src/SKILL.md" former-names); do
+	if [ -e "$project/$dir/$former" ]; then
+		echo "note: $dir/$former may be this template under its former name; once $skill is adapted, move anything you changed there by hand into it and delete $dir/$former"
+	fi
+done
 
 for agent in $(skill_agents "$src/SKILL.md"); do
 	if [ ! -f "$repo/agents/templates/$agent.md" ]; then

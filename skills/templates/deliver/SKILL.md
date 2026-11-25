@@ -10,6 +10,7 @@ description: >-
 metadata:
   internal: true
   template-revision: "7"
+  former-names: ship
 ---
 
 # Deliver

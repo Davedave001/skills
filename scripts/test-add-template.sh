@@ -37,6 +37,10 @@ expect() {
 
 project
 expect "empty project goes to .claude/skills" 0 .claude/skills/deliver/SKILL.md "$p" deliver
+if grep -qE 'internal:|former-names:' "$p/.claude/skills/deliver/SKILL.md"; then
+	echo "FAIL: the copy keeps internal or former-names" >&2
+	failures=$((failures + 1))
+fi
 for gone in SETUP.md evals; do
 	if [ -e "$p/.claude/skills/deliver/$gone" ]; then
 		echo "FAIL: $gone was copied into the project" >&2
@@ -68,6 +72,19 @@ project
 expect "--dir outside the project is refused" 1 - "$p" --dir ../elsewhere deliver
 expect "--dir absolute is refused" 1 - "$p" --dir /tmp/skills deliver
 expect "unknown template" 1 - "$p" no-such-template
+expect "a former name is refused" 1 - "$p" ship
+if ! grep -q "now called 'deliver'" "$root/out"; then
+	echo "FAIL: a former name doesn't say the template's new name" >&2
+	failures=$((failures + 1))
+fi
+
+project
+mkdir -p "$p/.claude/skills/ship" && touch "$p/.claude/skills/ship/SKILL.md"
+expect "a copy under a former name is kept" 0 .claude/skills/deliver/SKILL.md "$p" deliver
+if ! grep -q "skills/ship may be this template" "$root/out" || [ ! -e "$p/.claude/skills/ship/SKILL.md" ]; then
+	echo "FAIL: a copy under a former name isn't noted, or was removed" >&2
+	failures=$((failures + 1))
+fi
 
 if [ "$failures" -gt 0 ]; then
 	echo "$failures failure(s)" >&2

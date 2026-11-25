@@ -26,6 +26,33 @@
 				"A transcript shows the temporary folder holding the clone being deleted",
 				"Nothing was committed: main is still at the fixture's single commit, on origin too"
 			]
+		},
+		{
+			"id": 2,
+			"fixture": "renamed-ship",
+			"with_plugin": true,
+			"skip_permissions": true,
+			"prompt": "/adapt-skill ship",
+			"followups": [
+				"Yes, rename it.",
+				"Looks good, write it."
+			],
+			"expected_output": "Finds no ship template but the deliver template listing ship as a former name, finds the project's adapted .claude/skills/ship/, says the template was renamed and asks whether to rename the copy before changing anything. Once told yes, shows the refresh as a diff together with the CLAUDE.md change, and on the go-ahead moves the folder with git mv, renames the skill to deliver keeping the project's branch rule, updates CLAUDE.md and leaves the README alone.",
+			"expectations": [
+				"The first reply says the ship template is now called deliver and asks whether to rename the project's .claude/skills/ship/ copy",
+				"Nothing under .claude/ or CLAUDE.md was changed before the last turn: transcript-1 and transcript-2 have no Write, Edit or Bash command that changes them",
+				"The second reply shows the changes to the skill, names CLAUDE.md as a file it proposes to update, and asks for a go-ahead",
+				"outputs/claude/skills/deliver/SKILL.md exists and its frontmatter name is deliver",
+				"outputs/claude/skills/ship/ does not exist",
+				"The frontmatter of outputs/claude/skills/deliver/SKILL.md has template-revision 7, and neither internal nor former-names under metadata",
+				"outputs/claude/skills/deliver/SKILL.md still names branches feat/<slug>",
+				"outputs/claude/skills/deliver/SKILL.md mentions /deliver and not /ship as the way to invoke it",
+				"No file under outputs/claude/skills/deliver/ contains the text <!-- CUSTOMIZE",
+				"The Status section of outputs/git-state.txt shows .claude/skills/ship/SKILL.md renamed to .claude/skills/deliver/SKILL.md, and CLAUDE.md modified",
+				"A transcript shows CLAUDE.md changed to point to /deliver instead of /ship",
+				"README.md is not in the Status section of outputs/git-state.txt",
+				"Nothing was committed: main is still at the fixture's single commit, on origin too"
+			]
 		}
 	]
 }

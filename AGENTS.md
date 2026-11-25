@@ -144,6 +144,8 @@ Run `npm test`. For one file: `npx vitest run path/to/file.test.ts`.
 
 Every template carries `metadata.template-revision`, a whole number, in its frontmatter. Bump it whenever you change the template: `adapt-skill` compares it with a project's copy to offer a refresh. `scripts/check.sh` requires it.
 
+To rename a template, list its old names, space-separated, in `metadata.former-names` (`ship` became `deliver` when Claude Code shipped a built-in `/ship`). `adapt-skill` then finds a project's copy under an old name and offers to rename it, and `scripts/add-template.sh` points the old name to the new one. Keep an old name there for good: projects refresh whenever they like. `scripts/check.sh` checks no current skill uses it.
+
 Guidance for adapting a template that the markers alone can't carry (which questions to ask and in what order, what to look for across the project) goes in a `SETUP.md` next to its `SKILL.md`, not in a separate skill. `adapt-skill` follows it; it is never copied into the project and has no markers of its own.
 
 ## Checks

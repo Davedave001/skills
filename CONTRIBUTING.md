@@ -67,7 +67,7 @@ In a test project, with the plugin loaded from your clone, run `/adapt-skill <sk
 - Use Anthropic's skill-creator plugin when you create a skill or rework one: its eval loop and description tuning are the point.
 - Every installed skill's `description` is loaded into every session, so make it as long as it needs to be and no longer. AGENTS.md has a checklist to read it against.
 - List the skill in its bucket's `README.md` and, unless it's a draft, in the Skills section of the top-level README. A portable skill also goes in a group of `skills.sh.json`, which arranges the repo's page on skills.sh.
-- Bump a template's `metadata.template-revision` whenever you change it, so `adapt-skill` offers projects a refresh.
+- Bump a template's `metadata.template-revision` whenever you change it, so `adapt-skill` offers projects a refresh. When you rename one, add the old name to its `metadata.former-names`, so projects that installed it under that name can find it.
 
 `scripts/check.sh` catches most of what these rules can check.
 

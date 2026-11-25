@@ -138,6 +138,9 @@ for bucket in portable templates drafts; do
 done
 
 skill_names=""
+# "<old name>:<SKILL.md>" for every metadata.former-names entry, checked once
+# every skill name is known.
+former_names=""
 for bucket in portable templates drafts; do
 	for skill_dir in skills/"$bucket"/*/; do
 		[ -d "$skill_dir" ] || continue
@@ -161,6 +164,9 @@ for bucket in portable templates drafts; do
 		*" $name "*) fail "$skill_dir: name '$name' is used in more than one bucket" ;;
 		esac
 		skill_names="$skill_names $name"
+		for former in $(metadata_field "$skill_md" former-names); do
+			former_names="$former_names $former:$skill_md"
+		done
 
 		# The top-level README lists every installable skill by what it's for,
 		# and never a draft.
@@ -264,6 +270,22 @@ for skill_dir in .claude/skills/*/; do
 	case " $skill_names " in
 	*" $name "*) fail "$skill_dir: name '$name' is already used by a skill in skills/" ;;
 	esac
+done
+
+# adapt-skill finds a project's copy of a renamed template by its former
+# names, so each must point to one skill and to none that exists today.
+seen_former=" "
+for entry in $former_names; do
+	former="${entry%%:*}"
+	skill_md="${entry#*:}"
+	valid_name "$former" || fail "$skill_md: former name '$former' must be lowercase letters, digits and hyphens"
+	case " $skill_names " in
+	*" $former "*) fail "$skill_md: former name '$former' is the name of a skill" ;;
+	esac
+	case "$seen_former" in
+	*" $former "*) fail "$skill_md: former name '$former' is listed by more than one skill" ;;
+	esac
+	seen_former="$seen_former$former "
 done
 
 # The plugin loads skills/portable/ as a folder, but its agents one by one,
