@@ -63,6 +63,10 @@ find_skill() {
 now_dir="$(find_skill "$repo")"
 [ -n "$now_dir" ] || die "no skill named '$skill'"
 [ -f "$now_dir/evals/evals.json" ] || die "$skill has no evals/evals.json"
+for id in ${ids[@]+"${ids[@]}"}; do
+	jq -e --argjson id "$id" 'any(.evals[]; .id == $id)' "$now_dir/evals/evals.json" >/dev/null ||
+		die "$skill has no eval with id $id"
+done
 git -C "$repo" rev-parse --verify --quiet "$base^{commit}" >/dev/null || die "unknown ref '$base'"
 
 tmp="$(mktemp -d "${TMPDIR:-/tmp}/skill-compare.XXXXXX")"
