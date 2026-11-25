@@ -1,5 +1,8 @@
 [
 	{"query": "ok that's done, ship it", "should_trigger": true},
+	{"query": "deliver it", "should_trigger": true},
+	{"query": "the timezone fix looks good to me, please deliver it", "should_trigger": true},
+	{"query": "why doesn't the app deliver the reset email when the user has no timezone set?", "should_trigger": false},
 	{"query": "open a PR for this against develop", "should_trigger": true},
 	{"query": "the timezone fix is finished, can you get it reviewed?", "should_trigger": true},
 	{"query": "commit and push this", "should_trigger": true},
