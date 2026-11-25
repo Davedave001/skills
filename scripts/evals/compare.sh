@@ -93,24 +93,25 @@ echo "== $skill in the working tree" >&2
 now_results="$(run "$tmp/now.log")"
 [ -n "$now_results" ] || die "run.sh reported no results for the working tree"
 
-# grades <results>: prints "<eval id><TAB><index><TAB><passed>" for every
-# graded expectation.
+# grades <results>: prints "<eval id><TAB><expectation><TAB><passed>" for
+# every graded expectation. Grades are matched by the expectation's text, which
+# the grader copies verbatim, so one it skipped or reworded counts as ungraded.
 grades() {
 	local f id
 	for f in "$1"/eval-*/grading.json; do
 		[ -f "$f" ] || continue
 		id="${f%/grading.json}"
 		id="${id##*/eval-}"
-		jq -r --arg id "$id" '.expectations | to_entries[] | "\($id)\t\(.key)\t\(.value.passed == true)"' "$f"
+		jq -r --arg id "$id" '.expectations[] | "\($id)\t\(.text | gsub("[\t\n]"; " "))\t\(.passed == true)"' "$f"
 	done
 }
 grades "$kept" >"$tmp/before"
 grades "$now_results" >"$tmp/now"
 
-# grade <file> <id> <index>: prints pass, fail or "-" (not graded).
+# grade <file> <id> <expectation>: prints pass, fail or "-" (not graded).
 grade() {
 	local passed
-	passed="$(awk -F '\t' -v id="$2" -v i="$3" '$1 == id && $2 == i { print $3; exit }' "$1")"
+	passed="$(id="$2" text="$3" awk -F '\t' '$1 == ENVIRON["id"] && $2 == ENVIRON["text"] { print $3; exit }' "$1")"
 	case "$passed" in
 	true) echo pass ;;
 	false) echo fail ;;
@@ -123,9 +124,9 @@ gained=0
 lost=0
 unchanged=0
 printf '%-5s %-7s %-7s %-10s %s\n' eval before now change expectation
-while IFS="$(printf '\t')" read -r id index text; do
-	before="$(grade "$tmp/before" "$id" "$index")"
-	now="$(grade "$tmp/now" "$id" "$index")"
+while IFS="$(printf '\t')" read -r id text; do
+	before="$(grade "$tmp/before" "$id" "$text")"
+	now="$(grade "$tmp/now" "$id" "$text")"
 	if [ "$before" = pass ] && [ "$now" != pass ]; then
 		change=lost
 		lost=$((lost + 1))
@@ -139,8 +140,8 @@ while IFS="$(printf '\t')" read -r id index text; do
 	printf '%-5s %-7s %-7s %-10s %s\n' "$id" "$before" "$now" "$change" "$text"
 done < <(jq -r --argjson ids "$selected" '
 	.evals[] | select(($ids | length) == 0 or (.id as $id | $ids | index($id)))
-	| .id as $id | .expectations | to_entries[]
-	| "\($id)\t\(.key)\t\(.value | gsub("[\t\n]"; " "))"' "$now_dir/evals/evals.json")
+	| .id as $id | .expectations[]
+	| "\($id)\t\(gsub("[\t\n]"; " "))"' "$now_dir/evals/evals.json")
 echo
 echo "$gained gained, $lost lost, $unchanged unchanged"
 echo "results: $kept (base), $now_results (now)"
