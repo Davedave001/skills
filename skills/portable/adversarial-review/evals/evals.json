@@ -60,6 +60,66 @@
 				"No finding in the replies is reported as code that no desired outcome asks for (no Unrequested verdict, no \"not asked for\" finding): discount() and its RangeError are both in the outcomes",
 				"Nothing was changed or committed: feature/discount on origin and locally is still at the fixture's last commit and git status is clean"
 			]
+		},
+		{
+			"id": 5,
+			"fixture": "export-timeout",
+			"prompt": "council review of this branch before I open the PR. It fixes a bug: exporting a report sometimes failed with \"export timed out\", even for small reports. What it should do: exportReport resolves with the path of the CSV file for a known report; for a report that fails to render, it rejects with the render error.",
+			"followups": [
+				"Yes, those outcomes are right. Run the council on the focus areas you pick."
+			],
+			"expected_output": "Runs a council whose focus areas include diagnosis, since the change is a bug fix. Reports as a real finding that the longer timeout in src/export.js hides the symptom and leaves its cause in another module: the queue in src/queue.js never frees a slot when a job rejects, so after two failed renders it stalls and every later export waits until it times out, however long the timeout. Asks which findings to fix, and changes nothing.",
+			"expectations": [
+				"A transcript shows the agent starting one reviewer subagent per focus area (Agent tool calls), and one reviewer's prompt makes diagnosis its primary focus: whether the fix reaches the cause of the symptom or only hides it",
+				"No reviewer's prompt names the cause: none mentions that src/queue.js doesn't decrement `active`, or doesn't free a slot, when a job rejects",
+				"A reply reports, as a real finding, that the cause is in src/queue.js, not src/export.js: when a job rejects, the queue never decrements `active` (or frees the slot), so the longer timeout only hides the symptom",
+				"A reply gives a scenario where the bug fires again despite the fix: after two failed renders (for example two exports of an unknown report, with the default concurrency of 2) the queue stalls, and every later export, a valid one included, times out after the 60 seconds",
+				"Nothing was changed or committed: fix/export-timeout on origin and locally is still at the fixture's last commit, and the Status section of git-state.txt is empty"
+			]
+		},
+		{
+			"id": 6,
+			"fixture": "report-pool",
+			"prompt": "council review of this branch before I open the PR. It fixes a bug: the monthly totals report sometimes failed with \"timed out waiting for a connection\", even when nothing else was running. What it should do: monthlyTotals resolves with the month's invoice totals per customer, in cents; monthlyRefunds resolves with the month's refunds, newest first, and rejects with the database error when the query fails.",
+			"followups": [
+				"Yes, those outcomes are right. Run the council on the focus areas you pick."
+			],
+			"expected_output": "Runs a council whose focus areas include diagnosis, since the change is a bug fix. Reports as a real finding that the longer acquire timeout in src/reports/monthly.js hides the symptom and leaves its cause in another module: withConnection in src/db/pool.js never releases the connection when the work throws, so after three failed queries the pool is empty and every later caller times out, however long it waits. Asks which findings to fix, and changes nothing.",
+			"expectations": [
+				"A transcript shows the agent starting one reviewer subagent per focus area (Agent tool calls), and one reviewer's prompt makes diagnosis its primary focus: whether the fix reaches the cause of the symptom or only hides it",
+				"No reviewer's prompt names the cause: none mentions that withConnection in src/db/pool.js doesn't release the connection when the work throws",
+				"A reply reports, as a real finding, that the cause is in src/db/pool.js, not src/reports/monthly.js: withConnection doesn't release the connection when the work throws (no try/finally), so the longer timeout only hides the symptom",
+				"A reply gives a scenario where the bug fires again despite the fix: after three failed queries (for example monthlyRefunds when the refunds query fails, with the pool's default size of 3) no connection is left, and every later monthlyTotals call times out after the 30 seconds",
+				"Nothing was changed or committed: fix/monthly-report-timeout on origin and locally is still at the fixture's last commit, and the Status section of git-state.txt is empty"
+			]
+		},
+		{
+			"id": 7,
+			"fixture": "export-timeout",
+			"prompt": "council review of this branch before I open the PR. It fixes a bug: exporting a report sometimes failed with \"export timed out\", even for small reports. What it should do: exportReport resolves with the path of the CSV file for a known report; for a report that fails to render, it rejects with the render error. Use custom mode with three reviewers: edge cases and boundaries, error handling and recovery, concurrency and races.",
+			"followups": [
+				"Yes, those outcomes are right."
+			],
+			"expected_output": "Control for eval 5, without the diagnosis area: starts three reviewers on edge cases, error handling and concurrency. If the diagnosis area finds more, none of them names the slot the queue in src/queue.js leaks when a job rejects as the cause of the timeouts. Changes nothing.",
+			"expectations": [
+				"A transcript shows the agent starting exactly three reviewer subagents (Agent tool calls), and no reviewer's prompt makes diagnosis its primary focus",
+				"No reply reports that the queue in src/queue.js never frees a slot (never decrements `active`) when a job rejects, or that this is why exports time out",
+				"Nothing was changed or committed: fix/export-timeout on origin and locally is still at the fixture's last commit, and the Status section of git-state.txt is empty"
+			]
+		},
+		{
+			"id": 8,
+			"fixture": "report-pool",
+			"prompt": "council review of this branch before I open the PR. It fixes a bug: the monthly totals report sometimes failed with \"timed out waiting for a connection\", even when nothing else was running. What it should do: monthlyTotals resolves with the month's invoice totals per customer, in cents; monthlyRefunds resolves with the month's refunds, newest first, and rejects with the database error when the query fails. Use custom mode with three reviewers: edge cases and boundaries, error handling and recovery, concurrency and races.",
+			"followups": [
+				"Yes, those outcomes are right."
+			],
+			"expected_output": "Control for eval 6, without the diagnosis area: starts three reviewers on edge cases, error handling and concurrency. If the diagnosis area finds more, none of them names the connection withConnection in src/db/pool.js leaks when the work throws as the cause of the timeouts. Changes nothing.",
+			"expectations": [
+				"A transcript shows the agent starting exactly three reviewer subagents (Agent tool calls), and no reviewer's prompt makes diagnosis its primary focus",
+				"No reply reports that withConnection in src/db/pool.js doesn't release the connection when the work throws, or that this is why the report times out",
+				"Nothing was changed or committed: fix/monthly-report-timeout on origin and locally is still at the fixture's last commit, and the Status section of git-state.txt is empty"
+			]
 		}
 	]
 }
